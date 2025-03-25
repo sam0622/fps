@@ -5,7 +5,7 @@ var last_esc: int
 
 func _process(delta: float) -> void:
 	time = Time.get_ticks_msec()
-	print([time, last_esc])
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("free_mouse"):

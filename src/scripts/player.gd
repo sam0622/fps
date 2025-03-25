@@ -8,12 +8,18 @@ var gravity := ProjectSettings.get_setting("physics/3d/default_gravity") as floa
 var mouse_sensitivity := 1200
 var mouse_relative_x := 0
 var mouse_relative_y := 0
+var base_gun := preload("res://src/scenes/guns/gun.tscn")
+var equipped_gun: Gun
 
 @onready var camera := get_viewport().get_camera_3d()
+@onready var ray := $Head/Camera3d/RayCast3D
 
 
 func _ready() -> void:
+	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	equip_gun(base_gun)
+	
 
 
 func _physics_process(delta: float) -> void:
@@ -46,3 +52,21 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton: 
 		if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if event.is_action_pressed("left_click"):
+			shoot()
+
+
+func equip_gun(type: PackedScene):
+	var instance := type.instantiate()
+	$Head/Camera3d/GunMarker.add_child(instance)
+	equipped_gun = get_node_or_null("Head/Camera3d/GunMarker/Gun")
+	print(get_tree_string_pretty())
+	print(equipped_gun)
+
+
+func shoot() -> void:
+	equipped_gun.shoot()
+	if ray.is_colliding():
+		var collision := ray.get_collider() as CollisionObject3D
+		if collision.is_in_group("target"):
+			collision.on_shot(equipped_gun)
