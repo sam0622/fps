@@ -11,12 +11,12 @@ config_version=5
 [application]
 
 config/name="FPS"
-run/main_scene="res://src/levels/node_3d.tscn"
+run/main_scene="res://src/levels/testing_ground.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
-GameManager="*res://src/scripts/game_manager.gd"
+GameManager="*res://src/scripts/nodes/game_manager.gd"
 
 [editor]
 

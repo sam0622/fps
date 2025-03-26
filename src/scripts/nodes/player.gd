@@ -56,7 +56,7 @@ func _input(event: InputEvent) -> void:
 			shoot()
 
 
-func equip_gun(type: PackedScene):
+func equip_gun(type: PackedScene) -> void:
 	var instance := type.instantiate()
 	$Head/Camera3d/GunMarker.add_child(instance)
 	equipped_gun = get_node_or_null("Head/Camera3d/GunMarker/Gun")

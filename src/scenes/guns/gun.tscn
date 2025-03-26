@@ -1,13 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://b04ta5xdlql6k"]
 
-[ext_resource type="Script" uid="uid://hardpka2ghju" path="res://src/scripts/guns/gun.gd" id="1_4oid1"]
+[ext_resource type="Script" uid="uid://hardpka2ghju" path="res://src/scripts/nodes/guns/gun.gd" id="1_4oid1"]
 [ext_resource type="Script" uid="uid://dwihrndygdwxr" path="res://addons/LineRenderer/line_renderer.gd" id="2_4oid1"]
 [ext_resource type="Material" uid="uid://c1uh3h4vq3qsh" path="res://assets/resources/bullet_trail.tres" id="2_d1pt8"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4oid1"]
 size = Vector3(0.75, 0.2, 0.2)
 
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_4oid1"]
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_d1pt8"]
 
 [node name="Gun" type="Node3D"]
 script = ExtResource("1_4oid1")
@@ -25,7 +25,7 @@ transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 
 [node name="LineRenderer3D" type="MeshInstance3D" parent="Muzzle"]
 material_override = ExtResource("2_d1pt8")
 cast_shadow = 0
-mesh = SubResource("ImmediateMesh_4oid1")
+mesh = SubResource("ImmediateMesh_d1pt8")
 script = ExtResource("2_4oid1")
 points = Array[Vector3]([Vector3(0, 0, 0), Vector3(0, 0, -10)])
 start_thickness = 0.05

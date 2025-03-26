@@ -22,14 +22,12 @@ extends MeshInstance3D
 
 var camera : Camera3D
 var cameraOrigin : Vector3
-var surface := preload("res://assets/resources/bullet_trail.tres")
 
 func _enter_tree():
 	mesh = ImmediateMesh.new()
 
 func _ready():
 	mesh = ImmediateMesh.new()
-	mesh.surface_set_material(0, surface)
 
 func _process(_delta):
 	if points.size() < 2:
