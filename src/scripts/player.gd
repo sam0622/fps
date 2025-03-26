@@ -67,6 +67,6 @@ func equip_gun(type: PackedScene):
 func shoot() -> void:
 	equipped_gun.shoot()
 	if ray.is_colliding():
-		var collision := ray.get_collider() as CollisionObject3D
+		var collision = ray.get_collider()
 		if collision.is_in_group("target"):
 			collision.on_shot(equipped_gun)

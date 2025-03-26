@@ -29,4 +29,4 @@ fov = 90.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.383954, -0.340698, -0.370522)
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3d"]
-target_position = Vector3(0, 0, -100)
+target_position = Vector3(0, 0, -1000)

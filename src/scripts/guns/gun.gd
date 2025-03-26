@@ -25,33 +25,45 @@ const UID := "uid://b04ta5xdlql6k"
 @export var position_offset: Vector3
 
 var can_shoot: bool
+var state: GunState
 
 @onready var cooldown := $Cooldown
 @onready var player := get_tree().get_first_node_in_group("player") as Player
+@onready var line := $Muzzle/LineRenderer3D
 
 
 func _ready() -> void:
+	print(get_tree_string_pretty())
 	cooldown.wait_time = fire_cooldown
 	self.position = player.get_node("Head/Camera3d/GunMarker").position
 
 
+func _process(delta: float) -> void:
+	if state == GunState.SHOOTING:
+		line.points[0] = $Muzzle.global_position
+		line.points[1] = get_target_position()
+
+
+func get_target_position() -> Vector3:
+	var camera_direction = player.camera.global_transform.basis.z.normalized()
+	var ray_origin = $Muzzle.global_position
+	var ray_end = -(ray_origin + camera_direction * 1000)
+	
+	if player.ray.is_colliding():
+		return player.ray.get_collision_point()
+	else:
+		print(ray_end)
+		return ray_end
+
+
 func shoot() -> void:
-	line(self.position, player.ray.target_position)
-	print("shooting")
+	print(player.ray.is_colliding())
+	line.show()
+	state = GunState.SHOOTING
+	await get_tree().create_timer(0.1).timeout
+	state = GunState.COOLDOWN
+	line.hide()
 
 
-func line(pos1: Vector3, pos2: Vector3, color = Color.WHITE_SMOKE, persist_ms = 0):
-	var mesh_instance := MeshInstance3D.new()
-	var immediate_mesh := ImmediateMesh.new()
-	var material := ORMMaterial3D.new()
-
-	mesh_instance.mesh = immediate_mesh
-	mesh_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-
-	immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES, material)
-	immediate_mesh.surface_add_vertex(pos1)
-	immediate_mesh.surface_add_vertex(pos2)
-	immediate_mesh.surface_end()
-
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.albedo_color = color
+func _on_cooldown_timeout() -> void:
+	state = GunState.IDLE
