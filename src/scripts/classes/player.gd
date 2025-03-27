@@ -4,13 +4,13 @@ extends CharacterBody3D
 const speed := 5.0
 const JUMP_VELOCITY := 4.5
 
-@export var gun_type := Gun.new()
+@export var gun_type := Gun
 
 var gravity := ProjectSettings.get_setting("physics/3d/default_gravity") as float
 var mouse_sensitivity := 1200
 var mouse_relative_x := 0
 var mouse_relative_y := 0
-var equipped_gun
+var equipped_gun: Node3D
 
 
 @onready var camera := get_viewport().get_camera_3d()
@@ -20,7 +20,7 @@ var equipped_gun
 func _ready() -> void:
 	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	equip_gun(gun_type)
+	equip_gun(gun_type.new())
 	
 
 
@@ -60,9 +60,7 @@ func _input(event: InputEvent) -> void:
 
 func equip_gun(gun: Gun) -> void:
 	var uid := load(gun.UID)
-	var instance = uid.instantiate()	
-	print(instance)
+	var instance := uid.instantiate() as Node3D
 	$Head/Camera3d/GunMarker.add_child(instance)
 	equipped_gun = get_node_or_null("Head/Camera3d/GunMarker/Gun")
 	print(get_tree_string_pretty())
-	print(equipped_gun)

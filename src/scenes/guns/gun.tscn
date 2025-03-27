@@ -39,7 +39,6 @@ end_thickness = 0.05
 metadata/_custom_type_script = "uid://dwihrndygdwxr"
 
 [node name="RayCast3D" type="RayCast3D" parent="Muzzle"]
-transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 target_position = Vector3(0, 0, -1000)
 
 [connection signal="timeout" from="Cooldown" to="." method="_on_cooldown_timeout"]

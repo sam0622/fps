@@ -10,12 +10,14 @@ enum GunState {
 	EMPTY,
 }
 
+# Unused for the time being, may implement it later
 enum FireMode {
 	SINGLE,
 	BURST,
 	AUTO
 }
 
+# Binds class to corresponding scene
 static var UID := "uid://b04ta5xdlql6k"
 
 @export var ammo := 5
@@ -34,23 +36,22 @@ var state: GunState
 
 
 func _ready() -> void:
-	print(get_tree_string_pretty())
 	cooldown.wait_time = fire_cooldown
 	self.position = player.get_node("Head/Camera3d/GunMarker").position
 
 
 func _process(delta: float) -> void:
+	# Keeps bullet trail on the gun while shooting
+	# TODO: Just make this run once, bullet trails dont glue themselves to the barrel irl??
 	if state == GunState.SHOOTING:
 		line.points[0] = $Muzzle.global_position
 		line.points[1] = get_target_position()
-		print(line.points[1])
-		print($Muzzle/RayCast3D.target_position)
-		
 
 
 func get_target_position() -> Vector3:
 	var camera_direction = player.camera.global_transform.basis.z.normalized()
 	var ray_origin = $Muzzle.global_position
+	# Needs to be negated because of how Godot's coord system works
 	var ray_end = -(ray_origin + camera_direction * 1000)
 	
 	if player_ray.is_colliding():
@@ -75,9 +76,10 @@ func shoot() -> void:
 			if collision.has_method("_on_shot"):
 				collision = collision as Shootable
 				collision._on_shot(self)
+		
 		line.show()
 		state = GunState.SHOOTING
-		await get_tree().create_timer(0.1).timeout
+		await get_tree().create_timer(0.1).timeout # Wait 0.1 sec
 		state = GunState.COOLDOWN
 		cooldown.start()
 		line.hide()
