@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
-GameManager="*res://src/scripts/nodes/game_manager.gd"
+GameManager="*res://src/scripts/classes/globals/game_manager.gd"
 
 [editor]
 
@@ -30,7 +30,6 @@ enabled=PackedStringArray("res://addons/LineRenderer/plugin.cfg")
 [global_group]
 
 player=""
-target="things that can be shot"
 enemy=""
 
 [input]

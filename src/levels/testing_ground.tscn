@@ -63,5 +63,5 @@ transform = Transform3D(4, 0, 0, 0, 1, 0, 0, 0, 4, -13.0662, 2.84246, -1.36987)
 block_color_group = 1
 block_style = 2
 
-[node name="StaticBody3D" parent="." instance=ExtResource("4_xbaqn")]
+[node name="StaticBody3D" parent="." groups=["shootable"] instance=ExtResource("4_xbaqn")]
 transform = Transform3D(0.706106, 0, 0.708106, 0, 1, 0, -0.708106, 0, 0.706106, -3.21148, 1.8627, -14.6721)

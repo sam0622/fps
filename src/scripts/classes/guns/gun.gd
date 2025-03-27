@@ -16,11 +16,11 @@ enum FireMode {
 	AUTO
 }
 
-const UID := "uid://b04ta5xdlql6k"
+static var UID := "uid://b04ta5xdlql6k"
 
 @export var ammo := 5
 @export var damage := 10
-@export var fire_cooldown := 0.25
+@export var fire_cooldown := 0.35
 @export var fire_mode: FireMode
 @export var position_offset: Vector3
 
@@ -30,6 +30,7 @@ var state: GunState
 @onready var cooldown := $Cooldown
 @onready var player := get_tree().get_first_node_in_group("player") as Player
 @onready var line := $Muzzle/LineRenderer3D
+@onready var player_ray := player.ray as RayCast3D
 
 
 func _ready() -> void:
@@ -42,6 +43,9 @@ func _process(delta: float) -> void:
 	if state == GunState.SHOOTING:
 		line.points[0] = $Muzzle.global_position
 		line.points[1] = get_target_position()
+		print(line.points[1])
+		print($Muzzle/RayCast3D.target_position)
+		
 
 
 func get_target_position() -> Vector3:
@@ -49,20 +53,34 @@ func get_target_position() -> Vector3:
 	var ray_origin = $Muzzle.global_position
 	var ray_end = -(ray_origin + camera_direction * 1000)
 	
-	if player.ray.is_colliding():
-		return player.ray.get_collision_point()
+	if player_ray.is_colliding():
+		return player_ray.get_collision_point()
 	else:
-		print(ray_end)
 		return ray_end
 
 
+func get_colliding_ray() -> RayCast3D:
+	if player_ray.is_colliding():
+		return player_ray
+	elif $Muzzle/RayCast3D.is_colliding():
+		return $Muzzle/RayCast3D
+	else:
+		return null
+
+
 func shoot() -> void:
-	print(player.ray.is_colliding())
-	line.show()
-	state = GunState.SHOOTING
-	await get_tree().create_timer(0.1).timeout
-	state = GunState.COOLDOWN
-	line.hide()
+	if state == GunState.IDLE:
+		if not get_colliding_ray() == null:
+			var collision := get_colliding_ray().get_collider()
+			if collision.has_method("_on_shot"):
+				collision = collision as Shootable
+				collision._on_shot(self)
+		line.show()
+		state = GunState.SHOOTING
+		await get_tree().create_timer(0.1).timeout
+		state = GunState.COOLDOWN
+		cooldown.start()
+		line.hide()
 
 
 func _on_cooldown_timeout() -> void:
