@@ -1,12 +1,13 @@
 class_name Player
 extends CharacterBody3D
 
-const speed := 5.0
 const JUMP_VELOCITY := 4.5
 
-@export var gun_type := Gun
+@export var speed := 5.0
+
 
 var gravity := ProjectSettings.get_setting("physics/3d/default_gravity") as float
+var gun_type := Gun
 var mouse_sensitivity := 1200
 var mouse_relative_x := 0
 var mouse_relative_y := 0
@@ -42,6 +43,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
 	move_and_slide()
+	
 
 
 func _input(event: InputEvent) -> void:

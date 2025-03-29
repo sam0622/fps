@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://1gojmu0wsiih"]
+
+[ext_resource type="Script" uid="uid://5wvdq7s5tj7y" path="res://src/scripts/sphere.gd" id="1_srj6k"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6neqv"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0f478"]
+radius = 1.0
+
+[node name="Sphere" type="RigidBody3D"]
+freeze = true
+script = ExtResource("1_srj6k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_6neqv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_0f478")

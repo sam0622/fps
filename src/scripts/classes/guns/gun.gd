@@ -1,8 +1,6 @@
 class_name Gun
 extends Node3D
 
-signal shot(damage: int)
-
 enum GunState {
 	IDLE,
 	SHOOTING,
@@ -40,29 +38,36 @@ func _ready() -> void:
 	self.position = player.get_node("Head/Camera3d/GunMarker").position
 
 
-func _process(delta: float) -> void:
-	# Keeps bullet trail on the gun while shooting
-	# TODO: Just make this run once, bullet trails dont glue themselves to the barrel irl??
-	if state == GunState.SHOOTING:
-		line.points[0] = $Muzzle.global_position
-		line.points[1] = get_target_position()
-
-
 func get_target_position() -> Vector3:
 	var camera_direction = player.camera.global_transform.basis.z.normalized()
 	var ray_origin = $Muzzle.global_position
 	# Needs to be negated because of how Godot's coord system works
 	var ray_end = -(ray_origin + camera_direction * 1000)
 	
-	if player_ray.is_colliding():
+	if get_colliding_ray() == player_ray:
 		return player_ray.get_collision_point()
+	elif get_colliding_ray() == $Muzzle/RayCast3D:
+		return $Muzzle/RayCast3D.get_collision_point()
 	else:
 		return ray_end
 
 
 func get_colliding_ray() -> RayCast3D:
+	# not my proudest if statement
+	# i coulda made another function to get which collider is a shootable
+	# but that would either be a very long function
+	# or get_colliding_ray and the other function would call themselves
+	# so as much as i hate the triple nested if statement,
+	# this is probably the best way to do this
 	if player_ray.is_colliding():
-		return player_ray
+		if $Muzzle/RayCast3D.is_colliding():
+			if $Muzzle/RayCast3D.get_collider().has_method("_on_shot"):
+				return $Muzzle/RayCast3D
+			else:
+				return player_ray
+		else:
+			return player_ray
+	
 	elif $Muzzle/RayCast3D.is_colliding():
 		return $Muzzle/RayCast3D
 	else:
@@ -75,9 +80,11 @@ func shoot() -> void:
 			var collision := get_colliding_ray().get_collider()
 			if collision.has_method("_on_shot"):
 				collision = collision as Shootable
-				collision._on_shot(self)
+				collision._on_shot(self)	
 		
 		line.show()
+		line.points[0] = $Muzzle.global_position
+		line.points[1] = get_target_position()
 		state = GunState.SHOOTING
 		await get_tree().create_timer(0.1).timeout # Wait 0.1 sec
 		state = GunState.COOLDOWN

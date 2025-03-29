@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://ctahsvj88g1om"]
+[gd_scene load_steps=12 format=3 uid="uid://ctahsvj88g1om"]
 
 [ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_8hwbx"]
 [ext_resource type="PackedScene" uid="uid://7gv6q50fuutj" path="res://src/scenes/player/player.tscn" id="2_xbaqn"]
 [ext_resource type="Texture2D" uid="uid://cgp4mvev1cbra" path="res://addons/devblocks/textures/purple/texture_01.png" id="3_2lhae"]
 [ext_resource type="PackedScene" uid="uid://dsjjwhl1ox0am" path="res://src/scenes/static_target.tscn" id="4_xbaqn"]
+[ext_resource type="Material" uid="uid://c1uh3h4vq3qsh" path="res://assets/resources/bullet_trail.tres" id="6_annv8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6g5uc"]
 
@@ -14,11 +15,20 @@ sky_material = SubResource("ProceduralSkyMaterial_6g5uc")
 background_mode = 2
 background_color = Color(0.2139, 0.570975, 0.69, 1)
 sky = SubResource("Sky_ivwug")
+glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2gtf0"]
 albedo_texture = ExtResource("3_2lhae")
 uv1_scale = Vector3(3, 3, 3)
 uv1_triplanar = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_6neqv"]
+material = ExtResource("6_annv8")
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0f478"]
+radius = 1.0
 
 [node name="Node3d" type="Node3D"]
 
@@ -63,5 +73,14 @@ transform = Transform3D(4, 0, 0, 0, 1, 0, 0, 0, 4, -13.0662, 2.84246, -1.36987)
 block_color_group = 1
 block_style = 2
 
-[node name="StaticBody3D" parent="." groups=["shootable"] instance=ExtResource("4_xbaqn")]
+[node name="StaticBody3D" parent="." instance=ExtResource("4_xbaqn")]
 transform = Transform3D(0.706106, 0, 0.708106, 0, 1, 0, -0.708106, 0, 0.706106, -3.21148, 1.8627, -14.6721)
+
+[node name="Sphere" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.69039, 1.91772, -12.564)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere"]
+mesh = SubResource("SphereMesh_6neqv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sphere"]
+shape = SubResource("SphereShape3D_0f478")
