@@ -1,5 +1,10 @@
 extends Node
 
+enum DamageTypes {
+	BULLET,
+	BLUNT
+}
+
 var time := Time.get_ticks_msec()
 var last_esc: int
 

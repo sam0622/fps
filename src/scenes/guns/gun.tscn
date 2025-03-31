@@ -16,6 +16,7 @@ script = ExtResource("1_4oid1")
 metadata/_custom_type_script = "uid://hardpka2ghju"
 
 [node name="Cooldown" type="Timer" parent="."]
+one_shot = true
 
 [node name="GunModel" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.000481844, 0, -0.00664544)

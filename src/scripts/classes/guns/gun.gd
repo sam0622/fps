@@ -18,9 +18,17 @@ enum FireMode {
 # Binds class to corresponding scene
 static var UID := "uid://b04ta5xdlql6k"
 
-@export var ammo := 5
+@export var ammo := 5:
+	set(value):
+		ammo = value
+		if ammo <= 0:
+			ammo = 0
+			state = GunState.EMPTY
+
 @export var damage := 10
 @export var fire_cooldown := 0.35
+@export var throw_velocity := 100.0
+@export var throw_damage := 5
 @export var fire_mode: FireMode
 @export var position_offset: Vector3
 
@@ -36,6 +44,11 @@ var state: GunState
 func _ready() -> void:
 	cooldown.wait_time = fire_cooldown
 	self.position = player.get_node("Head/Camera3d/GunMarker").position
+
+
+func _process(delta: float) -> void:
+	if ammo == 0:
+		state = GunState.EMPTY
 
 
 func get_target_position() -> Vector3:
@@ -75,21 +88,31 @@ func get_colliding_ray() -> RayCast3D:
 
 
 func shoot() -> void:
-	if state == GunState.IDLE:
-		if not get_colliding_ray() == null:
-			var collision := get_colliding_ray().get_collider()
-			if collision.has_method("_on_shot"):
-				collision = collision as Shootable
-				collision._on_shot(self)	
-		
-		line.show()
-		line.points[0] = $Muzzle.global_position
-		line.points[1] = get_target_position()
-		state = GunState.SHOOTING
-		await get_tree().create_timer(0.1).timeout # Wait 0.1 sec
-		state = GunState.COOLDOWN
-		cooldown.start()
-		line.hide()
+	print(state)
+	if state != GunState.IDLE:
+		return
+	
+	if not get_colliding_ray() == null:
+		var collision := get_colliding_ray().get_collider().get_parent() as Node3D
+		if collision.is_in_group("enemy"):
+			collision.hit(damage, GameManager.DamageTypes.BULLET)
+		elif collision.is_in_group("shootable"):
+			collision.hit()
+	
+	line.show()
+	line.points[0] = $Muzzle.global_position
+	line.points[1] = get_target_position()
+	state = GunState.SHOOTING
+	ammo -= 1
+	print(ammo)
+	await get_tree().create_timer(0.1).timeout # Wait 0.1 sec
+	state = GunState.COOLDOWN
+	cooldown.start()
+	line.hide()
+
+
+func throw():
+	pass
 
 
 func _on_cooldown_timeout() -> void:

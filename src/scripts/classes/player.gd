@@ -4,15 +4,13 @@ extends CharacterBody3D
 const JUMP_VELOCITY := 4.5
 
 @export var speed := 5.0
-
+@export var gun: PackedScene
 
 var gravity := ProjectSettings.get_setting("physics/3d/default_gravity") as float
-var gun_type := Gun
 var mouse_sensitivity := 1200
 var mouse_relative_x := 0
 var mouse_relative_y := 0
-var equipped_gun: Node3D
-
+var equipped_gun: Gun
 
 @onready var camera := get_viewport().get_camera_3d()
 @onready var ray := $Head/Camera3d/RayCast3D
@@ -21,7 +19,7 @@ var equipped_gun: Node3D
 func _ready() -> void:
 	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	equip_gun(gun_type.new())
+	equip_gun(gun)
 	
 
 
@@ -57,12 +55,22 @@ func _input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		if event.is_action_pressed("left_click"):
-			equipped_gun.shoot()
+			if equipped_gun:
+				if equipped_gun.state == Gun.GunState.EMPTY:
+					equipped_gun.throw()
+				else:
+					equipped_gun.shoot()
 
 
-func equip_gun(gun: Gun) -> void:
-	var uid := load(gun.UID)
-	var instance := uid.instantiate() as Node3D
-	$Head/Camera3d/GunMarker.add_child(instance)
-	equipped_gun = get_node_or_null("Head/Camera3d/GunMarker/Gun")
-	print(get_tree_string_pretty())
+func equip_gun(gun: PackedScene) -> void:
+	if gun:
+		var instance := gun.instantiate()
+		$Head/Camera3d/GunMarker.add_child(instance)
+		equipped_gun = get_node_or_null("Head/Camera3d/GunMarker/Gun")
+		print(get_tree_string_pretty())
+
+
+func unequip_gun():
+	if gun:
+		equipped_gun.queue_free()
+		equipped_gun = null

@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://7gv6q50fuutj"]
+[gd_scene load_steps=6 format=3 uid="uid://7gv6q50fuutj"]
 
 [ext_resource type="Script" uid="uid://cyxkphoxfxfkl" path="res://src/scripts/classes/player.gd" id="1_1w47b"]
+[ext_resource type="PackedScene" uid="uid://b04ta5xdlql6k" path="res://src/scenes/guns/gun.tscn" id="2_qopur"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_emkox"]
 
@@ -12,11 +13,13 @@ material = SubResource("StandardMaterial3D_uvnfx")
 
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_1w47b")
+gun = ExtResource("2_qopur")
 
 [node name="CollisionShape3d" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_emkox")
 
 [node name="MeshInstance3d" type="MeshInstance3D" parent="."]
+cast_shadow = 0
 mesh = SubResource("CapsuleMesh_6b3ky")
 
 [node name="Head" type="Node3D" parent="."]
