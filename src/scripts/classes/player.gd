@@ -13,7 +13,9 @@ var mouse_relative_y := 0
 var equipped_gun: Gun
 
 @onready var camera := get_viewport().get_camera_3d()
-@onready var ray := $Head/Camera3d/RayCast3D
+@onready var gun_marker := camera.get_node("GunMarker")
+@onready var throw_marker := camera.get_node("ThrowMarker")
+@onready var ray := camera.get_node("RayCast3D")
 
 
 func _ready() -> void:
@@ -66,7 +68,7 @@ func equip_gun(gun: PackedScene) -> void:
 	if gun:
 		var instance := gun.instantiate()
 		$Head/Camera3d/GunMarker.add_child(instance)
-		equipped_gun = get_node_or_null("Head/Camera3d/GunMarker/Gun")
+		equipped_gun = camera.get_node_or_null("GunMarker/Gun")
 		print(get_tree_string_pretty())
 
 

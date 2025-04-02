@@ -34,6 +34,7 @@ static var UID := "uid://b04ta5xdlql6k"
 
 var can_shoot: bool
 var state: GunState
+var thrown_gun_scene := preload("uid://cojbjlwm2w1kh")
 
 @onready var cooldown := $Cooldown
 @onready var player := get_tree().get_first_node_in_group("player") as Player
@@ -112,8 +113,10 @@ func shoot() -> void:
 
 
 func throw():
-	pass
-
+	var thrown := thrown_gun_scene.instantiate() as ThrownGun
+	thrown.create(throw_damage, throw_velocity, $GunModel)
+	player.add_child(thrown)
+	
 
 func _on_cooldown_timeout() -> void:
 	state = GunState.IDLE

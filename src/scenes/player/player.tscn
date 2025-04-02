@@ -15,10 +15,10 @@ material = SubResource("StandardMaterial3D_uvnfx")
 script = ExtResource("1_1w47b")
 gun = ExtResource("2_qopur")
 
-[node name="CollisionShape3d" type="CollisionShape3D" parent="."]
+[node name="Collider" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_emkox")
 
-[node name="MeshInstance3d" type="MeshInstance3D" parent="."]
+[node name="Model" type="MeshInstance3D" parent="."]
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_6b3ky")
 
@@ -33,3 +33,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.25, -0.3)
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3d"]
 target_position = Vector3(0, 0, -1000)
+
+[node name="ThrowMarker" type="Marker3D" parent="Head/Camera3d"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.465439, -0.369398)

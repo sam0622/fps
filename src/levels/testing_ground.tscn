@@ -30,7 +30,7 @@ height = 2.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_0f478"]
 radius = 1.0
 
-[node name="Node3d" type="Node3D"]
+[node name="Main" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l5pxq")

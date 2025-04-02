@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cojbjlwm2w1kh"]
+
+[ext_resource type="Script" uid="uid://cxjtpy6rrn0fr" path="res://src/scripts/classes/thrown_gun.gd" id="1_t4scm"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_t4scm"]
+absorbent = true
+
+[node name="ThrownGun" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_t4scm")
+script = ExtResource("1_t4scm")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
