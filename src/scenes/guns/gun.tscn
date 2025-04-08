@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b04ta5xdlql6k"]
 
-[ext_resource type="Script" uid="uid://hardpka2ghju" path="res://src/scripts/classes/gun.gd" id="1_4oid1"]
+[ext_resource type="Script" uid="uid://hardpka2ghju" path="res://src/scripts/gun.gd" id="1_4oid1"]
 [ext_resource type="Script" uid="uid://dwihrndygdwxr" path="res://addons/LineRenderer/line_renderer.gd" id="2_4oid1"]
 [ext_resource type="Material" uid="uid://c1uh3h4vq3qsh" path="res://assets/resources/bullet_trail.tres" id="2_d1pt8"]
 
@@ -13,13 +13,6 @@ size = Vector3(0.75, 0.2, 0.2)
 
 [node name="Gun" type="Node3D"]
 script = ExtResource("1_4oid1")
-ammo = 1
-damage = null
-fire_cooldown = null
-throw_velocity = 50.0
-throw_damage = null
-fire_mode = null
-position_offset = null
 metadata/_custom_type_script = "uid://hardpka2ghju"
 
 [node name="Cooldown" type="Timer" parent="."]
@@ -46,7 +39,9 @@ start_thickness = 0.05
 end_thickness = 0.05
 metadata/_custom_type_script = "uid://dwihrndygdwxr"
 
-[node name="RayCast3D" type="RayCast3D" parent="Muzzle"]
+[node name="MuzzleRayCast" type="RayCast3D" parent="Muzzle"]
+unique_name_in_owner = true
 target_position = Vector3(0, 0, -1000)
+collision_mask = 7
 
 [connection signal="timeout" from="Cooldown" to="." method="_on_cooldown_timeout"]

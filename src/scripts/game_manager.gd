@@ -8,6 +8,8 @@ enum DamageTypes {
 var time := Time.get_ticks_msec()
 var last_esc: int
 
+@onready var main := get_node("/root/Main")
+
 func _process(delta: float) -> void:
 	time = Time.get_ticks_msec()
 

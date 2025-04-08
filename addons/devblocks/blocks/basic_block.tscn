@@ -13,6 +13,8 @@ uv1_offset = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
 
 [node name="BasicBlock" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 7
 script = ExtResource("1_aiicv")
 
 [node name="Shape" type="CollisionShape3D" parent="."]

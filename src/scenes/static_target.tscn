@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dsjjwhl1ox0am"]
 
-[ext_resource type="Script" uid="uid://cbcccsxgw83n8" path="res://src/scripts/classes/static_target.gd" id="1_0sfdl"]
+[ext_resource type="Script" uid="uid://cbcccsxgw83n8" path="res://src/scripts/static_target.gd" id="1_0sfdl"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_jchhb"]
 size = Vector3(1.5, 2, 0.1)
@@ -9,6 +9,8 @@ size = Vector3(1.5, 2, 0.1)
 data = PackedVector3Array(-0.75, 1, 0.05, 0.75, 1, 0.05, -0.75, -1, 0.05, 0.75, 1, 0.05, 0.75, -1, 0.05, -0.75, -1, 0.05, 0.75, 1, -0.05, -0.75, 1, -0.05, 0.75, -1, -0.05, -0.75, 1, -0.05, -0.75, -1, -0.05, 0.75, -1, -0.05, 0.75, 1, 0.05, 0.75, 1, -0.05, 0.75, -1, 0.05, 0.75, 1, -0.05, 0.75, -1, -0.05, 0.75, -1, 0.05, -0.75, 1, -0.05, -0.75, 1, 0.05, -0.75, -1, -0.05, -0.75, 1, 0.05, -0.75, -1, 0.05, -0.75, -1, -0.05, 0.75, 1, 0.05, -0.75, 1, 0.05, 0.75, 1, -0.05, -0.75, 1, 0.05, -0.75, 1, -0.05, 0.75, 1, -0.05, -0.75, -1, 0.05, 0.75, -1, 0.05, -0.75, -1, -0.05, 0.75, -1, 0.05, 0.75, -1, -0.05, -0.75, -1, -0.05)
 
 [node name="StaticBody3D" type="StaticBody3D" groups=["shootable"]]
+collision_layer = 4
+collision_mask = 7
 script = ExtResource("1_0sfdl")
 metadata/_custom_type_script = "uid://cbcccsxgw83n8"
 

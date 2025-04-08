@@ -1,6 +1,12 @@
 class_name Gun
 extends Node3D
 
+
+enum GunType {
+	BASE
+}
+
+
 enum GunState {
 	IDLE,
 	SHOOTING,
@@ -17,6 +23,7 @@ enum FireMode {
 
 # Binds class to corresponding scene
 static var UID := "uid://b04ta5xdlql6k"
+static var guns := [Gun]
 
 @export var ammo := 5:
 	set(value):
@@ -27,8 +34,7 @@ static var UID := "uid://b04ta5xdlql6k"
 
 @export var damage := 10
 @export var fire_cooldown := 0.35
-@export var throw_velocity := 100.0
-@export var throw_damage := 5
+@export var throw_scene: PackedScene
 @export var fire_mode: FireMode
 @export var position_offset: Vector3
 
@@ -40,6 +46,12 @@ var thrown_gun_scene := preload("uid://cojbjlwm2w1kh")
 @onready var player := get_tree().get_first_node_in_group("player") as Player
 @onready var line := $Muzzle/LineRenderer3D
 @onready var player_ray := player.ray as RayCast3D
+@onready var muzzle_ray := get_node("%MuzzleRayCast")
+
+
+static func get_uid(gun: GunType) -> String:
+	print(gun)
+	return guns[gun].UID
 
 
 func _ready() -> void:
@@ -53,15 +65,15 @@ func _process(delta: float) -> void:
 
 
 func get_target_position() -> Vector3:
-	var camera_direction = player.camera.global_transform.basis.z.normalized()
-	var ray_origin = $Muzzle.global_position
+	var camera_direction := player.camera.global_transform.basis.z.normalized()
+	var ray_origin := $Muzzle.global_position as Vector3
 	# Needs to be negated because of how Godot's coord system works
-	var ray_end = -(ray_origin + camera_direction * 1000)
+	var ray_end := -(ray_origin + camera_direction * 1000) as Vector3
 	
 	if get_colliding_ray() == player_ray:
 		return player_ray.get_collision_point()
-	elif get_colliding_ray() == $Muzzle/RayCast3D:
-		return $Muzzle/RayCast3D.get_collision_point()
+	elif get_colliding_ray() == muzzle_ray:
+		return muzzle_ray.get_collision_point()
 	else:
 		return ray_end
 
@@ -74,16 +86,16 @@ func get_colliding_ray() -> RayCast3D:
 	# so as much as i hate the triple nested if statement,
 	# this is probably the best way to do this
 	if player_ray.is_colliding():
-		if $Muzzle/RayCast3D.is_colliding():
-			if $Muzzle/RayCast3D.get_collider().has_method("_on_shot"):
-				return $Muzzle/RayCast3D
+		if muzzle_ray.is_colliding():
+			if muzzle_ray.get_collider().has_method("_on_shot"):
+				return muzzle_ray
 			else:
 				return player_ray
 		else:
 			return player_ray
 	
-	elif $Muzzle/RayCast3D.is_colliding():
-		return $Muzzle/RayCast3D
+	elif muzzle_ray.is_colliding():
+		return muzzle_ray
 	else:
 		return null
 
@@ -94,10 +106,13 @@ func shoot() -> void:
 		return
 	
 	if not get_colliding_ray() == null:
-		var collision := get_colliding_ray().get_collider().get_parent() as Node3D
+		print("collision")
+		var collision := get_colliding_ray().get_collider() as Node3D
+		print(collision.to_string())
 		if collision.is_in_group("enemy"):
 			collision.hit(damage, GameManager.DamageTypes.BULLET)
 		elif collision.is_in_group("shootable"):
+			print("collision is shootable")
 			collision.hit()
 	
 	line.show()
@@ -112,11 +127,10 @@ func shoot() -> void:
 	line.hide()
 
 
-func throw():
-	var thrown := thrown_gun_scene.instantiate() as ThrownGun
-	thrown.create(throw_damage, throw_velocity, $GunModel)
-	player.add_child(thrown)
-	
+func throw() -> void:
+	var instance := thrown_gun_scene.instantiate()
+	GameManager.main.add_child(instance)
+	#player.unequip_gun()
 
 func _on_cooldown_timeout() -> void:
 	state = GunState.IDLE

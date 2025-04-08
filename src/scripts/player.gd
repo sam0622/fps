@@ -4,24 +4,24 @@ extends CharacterBody3D
 const JUMP_VELOCITY := 4.5
 
 @export var speed := 5.0
-@export var gun: PackedScene
+@export var starting_gun: Gun.GunType
 
 var gravity := ProjectSettings.get_setting("physics/3d/default_gravity") as float
 var mouse_sensitivity := 1200
 var mouse_relative_x := 0
 var mouse_relative_y := 0
-var equipped_gun: Gun
+var current_gun: Gun
 
 @onready var camera := get_viewport().get_camera_3d()
-@onready var gun_marker := camera.get_node("GunMarker")
-@onready var throw_marker := camera.get_node("ThrowMarker")
-@onready var ray := camera.get_node("RayCast3D")
+@onready var gun_marker := get_node("%GunMarker")
+@onready var throw_marker := get_node("%ThrowMarker")
+@onready var ray := get_node("%RayCast3D")
 
 
 func _ready() -> void:
 	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	equip_gun(gun)
+	equip_gun(starting_gun)
 	
 
 
@@ -53,26 +53,29 @@ func _input(event: InputEvent) -> void:
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90) )
 		mouse_relative_x = clamp(event.relative.x, -50, 50)
 		mouse_relative_y = clamp(event.relative.y, -50, 10)
+		
 	if event is InputEventMouseButton: 
 		if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		if event.is_action_pressed("left_click"):
-			if equipped_gun:
-				if equipped_gun.state == Gun.GunState.EMPTY:
-					equipped_gun.throw()
+			if current_gun:
+				if current_gun.state == Gun.GunState.EMPTY:
+					current_gun.throw()
 				else:
-					equipped_gun.shoot()
+					current_gun.shoot()
 
 
-func equip_gun(gun: PackedScene) -> void:
-	if gun:
-		var instance := gun.instantiate()
-		$Head/Camera3d/GunMarker.add_child(instance)
-		equipped_gun = camera.get_node_or_null("GunMarker/Gun")
-		print(get_tree_string_pretty())
+func equip_gun(gun: Gun.GunType) -> void:
+	if current_gun:
+		unequip_gun()
+	
+	var uid := load(Gun.get_uid(gun))
+	var instance := uid.instantiate() as Node3D
+	$Head/Camera3d/GunMarker.add_child(instance)
+	current_gun = camera.get_node_or_null("GunMarker/Gun")
 
 
-func unequip_gun():
-	if gun:
-		equipped_gun.queue_free()
-		equipped_gun = null
+func unequip_gun() -> void:
+	if current_gun:
+		current_gun.queue_free()
+		current_gun = null

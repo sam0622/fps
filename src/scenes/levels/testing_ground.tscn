@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://ctahsvj88g1om"]
 
-[ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_8hwbx"]
-[ext_resource type="PackedScene" uid="uid://7gv6q50fuutj" path="res://src/scenes/player/player.tscn" id="2_xbaqn"]
-[ext_resource type="Texture2D" uid="uid://cgp4mvev1cbra" path="res://addons/devblocks/textures/purple/texture_01.png" id="3_2lhae"]
-[ext_resource type="PackedScene" uid="uid://dsjjwhl1ox0am" path="res://src/scenes/static_target.tscn" id="4_xbaqn"]
-[ext_resource type="Material" uid="uid://c1uh3h4vq3qsh" path="res://assets/resources/bullet_trail.tres" id="6_annv8"]
+[ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_auvdq"]
+[ext_resource type="PackedScene" uid="uid://7gv6q50fuutj" path="res://src/scenes/player/player.tscn" id="2_g85ek"]
+[ext_resource type="Texture2D" uid="uid://cgp4mvev1cbra" path="res://addons/devblocks/textures/purple/texture_01.png" id="3_q7uao"]
+[ext_resource type="PackedScene" uid="uid://dsjjwhl1ox0am" path="res://src/scenes/static_target.tscn" id="4_qy0nn"]
+[ext_resource type="Material" uid="uid://c1uh3h4vq3qsh" path="res://assets/resources/bullet_trail.tres" id="5_es3a7"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6g5uc"]
 
@@ -18,12 +18,12 @@ sky = SubResource("Sky_ivwug")
 glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2gtf0"]
-albedo_texture = ExtResource("3_2lhae")
+albedo_texture = ExtResource("3_q7uao")
 uv1_scale = Vector3(3, 3, 3)
 uv1_triplanar = true
 
 [sub_resource type="SphereMesh" id="SphereMesh_6neqv"]
-material = ExtResource("6_annv8")
+material = ExtResource("5_es3a7")
 radius = 1.0
 height = 2.0
 
@@ -35,12 +35,13 @@ radius = 1.0
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l5pxq")
 
-[node name="BasicBlock4" parent="." instance=ExtResource("1_8hwbx")]
+[node name="BasicBlock4" parent="." instance=ExtResource("1_auvdq")]
 transform = Transform3D(9.10803, 0, 0, 0, 1, 0, 0, 0, 9, 6.49497, 2.07954, -31.5179)
 block_color_group = 1
 
-[node name="Player" parent="." instance=ExtResource("2_xbaqn")]
+[node name="Player" parent="." instance=ExtResource("2_g85ek")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+collision_mask = 5
 
 [node name="DirectionalLight3d" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.966349, 0.250904, -0.0567091, 0.182362, -0.512743, 0.838951, 0.181419, -0.821061, -0.541244, -0.00693703, 59.5145, -109.348)
@@ -49,15 +50,15 @@ light_indirect_energy = 0.884
 light_volumetric_fog_energy = 0.768
 shadow_enabled = true
 
-[node name="BasicBlock3" parent="." instance=ExtResource("1_8hwbx")]
+[node name="BasicBlock3" parent="." instance=ExtResource("1_auvdq")]
 transform = Transform3D(2, 0, 0, 0, 5, 0, 0, 0, 30, 12.0086, 2.95161, -0.0307474)
 block_color_group = 3
 block_style = 2
 
-[node name="BasicBlock" parent="." instance=ExtResource("1_8hwbx")]
+[node name="BasicBlock" parent="." instance=ExtResource("1_auvdq")]
 transform = Transform3D(100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0)
 
-[node name="BasicBlock2" parent="." instance=ExtResource("1_8hwbx")]
+[node name="BasicBlock2" parent="." instance=ExtResource("1_auvdq")]
 transform = Transform3D(6.981, 0, 0, 0, 1, 0, 0, 0, 4.093, 5.58332, 0.908197, -22.4728)
 block_color_group = 1
 block_style = 2
@@ -68,16 +69,20 @@ use_collision = true
 polygon = PackedVector2Array(0, 0, 0, 1, 0, 1, 1, 0)
 material = SubResource("StandardMaterial3D_2gtf0")
 
-[node name="BasicBlock5" parent="." instance=ExtResource("1_8hwbx")]
+[node name="BasicBlock5" parent="." instance=ExtResource("1_auvdq")]
 transform = Transform3D(4, 0, 0, 0, 1, 0, 0, 0, 4, -13.0662, 2.84246, -1.36987)
 block_color_group = 1
 block_style = 2
 
-[node name="StaticBody3D" parent="." instance=ExtResource("4_xbaqn")]
+[node name="StaticBody3D" parent="." instance=ExtResource("4_qy0nn")]
 transform = Transform3D(0.706106, 0, 0.708106, 0, 1, 0, -0.708106, 0, 0.706106, -3.21148, 1.8627, -14.6721)
+collision_layer = 4
+collision_mask = 7
 
 [node name="Sphere" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.69039, 1.91772, -12.564)
+collision_layer = 4
+collision_mask = 7
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere"]
 mesh = SubResource("SphereMesh_6neqv")
