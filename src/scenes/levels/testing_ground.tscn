@@ -41,7 +41,6 @@ block_color_group = 1
 
 [node name="Player" parent="." instance=ExtResource("2_g85ek")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-collision_mask = 5
 
 [node name="DirectionalLight3d" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.966349, 0.250904, -0.0567091, 0.182362, -0.512743, 0.838951, 0.181419, -0.821061, -0.541244, -0.00693703, 59.5145, -109.348)
@@ -76,8 +75,6 @@ block_style = 2
 
 [node name="StaticBody3D" parent="." instance=ExtResource("4_qy0nn")]
 transform = Transform3D(0.706106, 0, 0.708106, 0, 1, 0, -0.708106, 0, 0.706106, -3.21148, 1.8627, -14.6721)
-collision_layer = 4
-collision_mask = 7
 
 [node name="Sphere" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.69039, 1.91772, -12.564)
