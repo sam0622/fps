@@ -20,4 +20,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		if time - last_esc <= 500:
 			get_tree().quit()
 		last_esc = time
-		

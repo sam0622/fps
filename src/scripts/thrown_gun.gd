@@ -11,9 +11,10 @@ var bounced := false
 
 func _ready() -> void:
 	global_position = player.throw_marker.global_position
-	rotation.z = player.current_gun.rotation.z
+	rotation = player.current_gun.global_rotation
+	rotation.z = 45
 	apply_central_impulse(-player.throw_marker.global_transform.basis.z * forward_velocity)
-	#angular_velocity = Vector3(10, 10, 10)
+	angular_velocity = Vector3(randi_range(-10, 10), 0, randi_range(-10, 10))
 	sleeping = false
 
 
@@ -37,4 +38,3 @@ func _on_body_entered(body: Node3D) -> void:
 	else:
 		bounced = true
 		linear_velocity *= 0.7
-		linear_velocity = -linear_velocity

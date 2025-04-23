@@ -13,7 +13,6 @@ size = Vector3(0.75, 0.2, 0.2)
 
 [node name="Gun" type="Node3D"]
 script = ExtResource("1_4oid1")
-ammo = 0
 metadata/_custom_type_script = "uid://hardpka2ghju"
 
 [node name="Cooldown" type="Timer" parent="."]

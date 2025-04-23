@@ -14,7 +14,7 @@ enum GunState {
 	EMPTY,
 }
 
-# Unused for the time being, may implement it later
+## Unused
 enum FireMode {
 	SINGLE,
 	BURST,
@@ -34,7 +34,6 @@ static var guns := [Gun]
 
 @export var damage := 10
 @export var fire_cooldown := 0.35
-@export var throw_scene: PackedScene
 @export var fire_mode: FireMode
 @export var position_offset: Vector3
 
@@ -130,7 +129,8 @@ func shoot() -> void:
 func throw() -> void:
 	var instance := thrown_gun_scene.instantiate()
 	GameManager.main.add_child(instance)
-	#player.unequip_gun()
+	player.unequip_gun()
+
 
 func _on_cooldown_timeout() -> void:
 	state = GunState.IDLE
