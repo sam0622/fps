@@ -21,13 +21,12 @@ func _ready() -> void:
 func _on_body_entered(body: Node3D) -> void:
 	if body is Player or body is ThrownGun:
 		return
-	print("aaaaaaaaaaaa")
 	if active:
 		print(body.to_string())
 		if body.is_in_group("shootable"):
 			body.hit()
-		if body.is_in_group("enemy"):
-			body.hit(damage, GameManager.DamageTypes.BLUNT)
+		#if body.is_in_group("enemy"):
+			#body.hit(damage, GameManager.DamageTypes.BLUNT)
 	if bounced:
 			# On second impact kill velocity
 			active = false

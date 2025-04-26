@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://43b4m1bee8c"]
+
+[ext_resource type="Script" uid="uid://82qqrw7q456g" path="res://src/scripts/chaser.gd" id="1_qc0cy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eo4bo"]
+albedo_color = Color(0.545098, 0.341176, 0.572549, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_e1bd7"]
+material = SubResource("StandardMaterial3D_eo4bo")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_43hrp"]
+
+[node name="Chaser" type="CharacterBody3D" groups=["enemy"]]
+collision_layer = 8
+collision_mask = 15
+script = ExtResource("1_qc0cy")
+metadata/_custom_type_script = "uid://82qqrw7q456g"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_e1bd7")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_43hrp")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+debug_enabled = true

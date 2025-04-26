@@ -105,13 +105,11 @@ func shoot() -> void:
 		return
 	
 	if not get_colliding_ray() == null:
-		print("collision")
 		var collision := get_colliding_ray().get_collider() as Node3D
 		print(collision.to_string())
 		if collision.is_in_group("enemy"):
 			collision.hit(damage, GameManager.DamageTypes.BULLET)
 		elif collision.is_in_group("shootable"):
-			print("collision is shootable")
 			collision.hit()
 	
 	line.show()
