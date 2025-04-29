@@ -32,7 +32,8 @@ static var guns := [Gun]
 			ammo = 0
 			state = GunState.EMPTY
 
-@export var damage := 10
+@export var damage := 2
+@export var health := 10
 @export var fire_cooldown := 0.35
 @export var fire_mode: FireMode
 @export var position_offset: Vector3
@@ -49,7 +50,6 @@ var thrown_gun_scene := preload("uid://cojbjlwm2w1kh")
 
 
 static func get_uid(gun: GunType) -> String:
-	print(gun)
 	return guns[gun].UID
 
 
@@ -100,24 +100,21 @@ func get_colliding_ray() -> RayCast3D:
 
 
 func shoot() -> void:
-	print(state)
 	if state != GunState.IDLE:
 		return
 	
 	if not get_colliding_ray() == null:
 		var collision := get_colliding_ray().get_collider() as Node3D
-		print(collision.to_string())
-		if collision.is_in_group("enemy"):
-			collision.hit(damage, GameManager.DamageTypes.BULLET)
-		elif collision.is_in_group("shootable"):
-			collision.hit()
+		if collision.is_in_group("shootable"):
+			collision.on_hit()
+		elif collision.is_in_group("enemy"):
+			collision.on_hit(damage)
 	
 	line.show()
 	line.points[0] = $Muzzle.global_position
 	line.points[1] = get_target_position()
 	state = GunState.SHOOTING
 	ammo -= 1
-	print(ammo)
 	await get_tree().create_timer(0.1).timeout # Wait 0.1 sec
 	state = GunState.COOLDOWN
 	cooldown.start()

@@ -13,6 +13,7 @@ size = Vector3(0.75, 0.2, 0.2)
 
 [node name="Gun" type="Node3D"]
 script = ExtResource("1_4oid1")
+damage = 3
 metadata/_custom_type_script = "uid://hardpka2ghju"
 
 [node name="Cooldown" type="Timer" parent="."]
@@ -42,6 +43,6 @@ metadata/_custom_type_script = "uid://dwihrndygdwxr"
 [node name="MuzzleRayCast" type="RayCast3D" parent="Muzzle"]
 unique_name_in_owner = true
 target_position = Vector3(0, 0, -1000)
-collision_mask = 7
+collision_mask = 15
 
 [connection signal="timeout" from="Cooldown" to="." method="_on_cooldown_timeout"]

@@ -8,6 +8,7 @@ enum DamageTypes {
 var time := Time.get_ticks_msec()
 var last_esc: int
 var frame := 0
+var enemy_despawn_time := 15.0
 
 @onready var main := get_node("/root/Main")
 

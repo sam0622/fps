@@ -1,7 +1,7 @@
 class_name ThrownGun
 extends RigidBody3D
 
-@export var damage := 10
+@export var damage := 2
 @export var forward_velocity := 25
 var active := true
 var bounced := false
@@ -25,8 +25,8 @@ func _on_body_entered(body: Node3D) -> void:
 		print(body.to_string())
 		if body.is_in_group("shootable"):
 			body.hit()
-		#if body.is_in_group("enemy"):
-			#body.hit(damage, GameManager.DamageTypes.BLUNT)
+		if body.is_in_group("enemy"):
+			body.hit(damage)
 	if bounced:
 			# On second impact kill velocity
 			active = false
