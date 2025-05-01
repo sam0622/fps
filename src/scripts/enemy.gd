@@ -10,6 +10,7 @@ enum States { IDLE, CHASING, ATTACKING, DEAD }
 
 var state := States.IDLE
 var gravity := ProjectSettings.get("physics/3d/default_gravity") as float
+var update_frequency = randi_range(15, 22)
 
 @onready var agent := get_node("NavigationAgent3D")
 @onready var player := get_tree().get_first_node_in_group("player")
@@ -21,23 +22,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if GameManager.frame % 20 == 0:
+	if GameManager.frame % update_frequency == 0:
 		update_target_location(player.global_transform.origin)
-	velocity = Vector3.ZERO
-	
-	# Chase player
-	if state == States.CHASING:
-		var next_location = agent.get_next_path_position()
-		velocity = (next_location - global_transform.origin).normalized() * move_speed
-		look_at(player.position)
-		if agent.is_navigation_finished():
-			set_state(States.IDLE)
-	
-	if not is_on_floor():
-		velocity.y -= gravity
-	else:
-		velocity.y = 0
-	
 	move_and_slide()
 
 
@@ -56,9 +42,23 @@ func set_state(new_state: States) -> void:
 		States.CHASING:
 			pass
 		States.ATTACKING:
-			pass
+			attack()
 		States.DEAD:
 			die()
+
+
+func state_to_string() -> String:
+	match state:
+		States.IDLE:
+			return "IDLE"
+		States.CHASING:
+			return "CHASING"
+		States.ATTACKING:
+			return "ATTACKING"
+		States.DEAD:
+			return "DEAD"
+		_:
+			return ""
 
 
 func attack():
@@ -80,4 +80,4 @@ func update_target_location(target_location: Vector3) -> void:
 
 
 func _on_navigation_agent_3d_target_reached() -> void:
-	set_state(States.ATTACKING)
+	pass
