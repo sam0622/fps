@@ -47,22 +47,24 @@ func _physics_process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotation.y -= event.relative.x / mouse_sensitivity
 		camera.rotation.x -= event.relative.y / mouse_sensitivity
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90) )
 		mouse_relative_x = clamp(event.relative.x, -50, 50)
 		mouse_relative_y = clamp(event.relative.y, -50, 10)
 		
-	if event is InputEventMouseButton: 
+	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		if event.is_action_pressed("left_click"):
-			if current_gun:
-				if current_gun.state == Gun.GunState.EMPTY:
-					current_gun.throw()
-				else:
-					current_gun.shoot()
+			return
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			if event.is_action_pressed("left_click"):
+				if current_gun:
+					if current_gun.state == Gun.GunState.EMPTY:
+						current_gun.throw()
+					else:
+						current_gun.shoot()
 
 
 func equip_gun(gun: Gun.GunType) -> void:
