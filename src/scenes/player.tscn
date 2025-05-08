@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://7gv6q50fuutj"]
+[gd_scene load_steps=6 format=3 uid="uid://7gv6q50fuutj"]
 
 [ext_resource type="Script" uid="uid://cyxkphoxfxfkl" path="res://src/scripts/player.gd" id="1_1w47b"]
+[ext_resource type="PackedScene" uid="uid://bdayk27ip4v0q" path="res://src/scripts/ui/hud.tscn" id="2_v4rts"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_emkox"]
 
@@ -18,14 +19,13 @@ script = ExtResource("1_1w47b")
 shape = SubResource("CapsuleShape3D_emkox")
 
 [node name="Model" type="MeshInstance3D" parent="."]
-visible = false
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_6b3ky")
 
 [node name="Head" type="Node3D" parent="."]
 
 [node name="Camera3d" type="Camera3D" parent="Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.468479, -0.186251)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 fov = 90.0
 
 [node name="GunMarker" type="Marker3D" parent="Head/Camera3d"]
@@ -34,9 +34,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.25, -0.3)
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3d"]
 unique_name_in_owner = true
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 target_position = Vector3(0, 0, -1000)
 collision_mask = 15
 
 [node name="ThrowMarker" type="Marker3D" parent="Head/Camera3d"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.465439, -0.369398)
+
+[node name="Hud" parent="Head/Camera3d" instance=ExtResource("2_v4rts")]
