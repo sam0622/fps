@@ -40,9 +40,4 @@ start_thickness = 0.05
 end_thickness = 0.05
 metadata/_custom_type_script = "uid://dwihrndygdwxr"
 
-[node name="MuzzleRayCast" type="RayCast3D" parent="Muzzle"]
-unique_name_in_owner = true
-target_position = Vector3(0, 0, -1000)
-collision_mask = 15
-
 [connection signal="timeout" from="Cooldown" to="." method="_on_cooldown_timeout"]

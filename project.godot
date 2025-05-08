@@ -20,7 +20,7 @@ GameManager="*res://src/scripts/game_manager.gd"
 
 [debug]
 
-gdscript/warnings/untyped_declaration=1
+gdscript/warnings/untyped_declaration=2
 
 [editor]
 

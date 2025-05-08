@@ -46,7 +46,6 @@ var thrown_gun_scene := preload("uid://cojbjlwm2w1kh")
 @onready var player := get_tree().get_first_node_in_group("player") as Player
 @onready var line := $Muzzle/LineRenderer3D
 @onready var player_ray := player.ray as RayCast3D
-@onready var muzzle_ray := get_node("%MuzzleRayCast")
 
 
 static func get_uid(gun: GunType) -> String:
@@ -58,7 +57,7 @@ func _ready() -> void:
 	self.position = player.get_node("Head/Camera3d/GunMarker").position
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if ammo == 0:
 		state = GunState.EMPTY
 
@@ -69,42 +68,18 @@ func get_target_position() -> Vector3:
 	# Needs to be negated because of how Godot's coord system works
 	var ray_end := -(ray_origin + camera_direction * 1000) as Vector3
 	
-	if get_colliding_ray() == player_ray:
+	if player_ray.is_colliding():
 		return player_ray.get_collision_point()
-	elif get_colliding_ray() == muzzle_ray:
-		return muzzle_ray.get_collision_point()
 	else:
 		return ray_end
-
-
-func get_colliding_ray() -> RayCast3D:
-	# not my proudest if statement
-	# i coulda made another function to get which collider is a shootable
-	# but that would either be a very long function
-	# or get_colliding_ray and the other function would call themselves
-	# so as much as i hate the triple nested if statement,
-	# this is probably the best way to do this
-	if player_ray.is_colliding():
-		if muzzle_ray.is_colliding():
-			if muzzle_ray.get_collider().has_method("_on_shot"):
-				return muzzle_ray
-			else:
-				return player_ray
-		else:
-			return player_ray
-	
-	elif muzzle_ray.is_colliding():
-		return muzzle_ray
-	else:
-		return null
 
 
 func shoot() -> void:
 	if state != GunState.IDLE:
 		return
 	
-	if not get_colliding_ray() == null:
-		var collision := get_colliding_ray().get_collider() as Node3D
+	if player_ray.is_colliding():
+		var collision := player_ray.get_collider() as Node3D
 		if collision.is_in_group("shootable"):
 			collision.on_hit()
 		elif collision.is_in_group("enemy"):

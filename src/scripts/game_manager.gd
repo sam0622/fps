@@ -11,7 +11,7 @@ var enemy_despawn_time := 15.0
 
 @onready var main := get_node("/root/Main")
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	time = Time.get_ticks_msec()
 
 

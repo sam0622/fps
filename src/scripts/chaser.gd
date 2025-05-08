@@ -10,10 +10,11 @@ enum States { IDLE, CHASING, ATTACKING, DEAD }
 
 var state := States.IDLE
 var gravity := ProjectSettings.get("physics/3d/default_gravity") as float
-var update_frequency = randi_range(15, 22)
+var update_frequency := randi_range(15, 22)
 
 @onready var agent := get_node("NavigationAgent3D")
 @onready var player := get_tree().get_first_node_in_group("player")
+
 
 func _ready() -> void:
 	if omnipotent:
@@ -21,7 +22,7 @@ func _ready() -> void:
 	$DespawnTimer.wait_time = GameManager.enemy_despawn_time
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if Engine.get_frames_drawn() % update_frequency == 0:
 		update_target_location(player.global_transform.origin)
 	velocity = Vector3.ZERO
@@ -32,15 +33,16 @@ func _physics_process(delta: float) -> void:
 		velocity = (next_location - global_transform.origin).normalized() * move_speed
 		look_at(player.position, Vector3.UP)
 		if agent.is_navigation_finished():
-			set_state(States.IDLE)
+			attack()
+	
 	move_and_slide()
 
 
-func set_health(new_health: int):
+func set_health(new_health: int) -> void:
 	health = new_health
 	print(health <= 0)
 	if health <= 0:
-		set_state(States.DEAD)
+		die()
 
 
 func set_state(new_state: States) -> void:
@@ -51,9 +53,9 @@ func set_state(new_state: States) -> void:
 		States.CHASING:
 			pass
 		States.ATTACKING:
-			attack()
+			pass
 		States.DEAD:
-			die()
+			pass
 
 
 func state_to_string() -> String:
@@ -71,19 +73,21 @@ func state_to_string() -> String:
 
 
 func attack() -> void:
+	set_state(States.ATTACKING)
 	#$AnimationPlayer.play("jump")
 	await get_tree().create_timer(0.15)
 	#$AnimationPlayer.play("attack")
 	set_state(States.CHASING)
 
 
-func on_hit(damage: int):
+func on_hit(damage: int) -> void:
 	if state != States.DEAD:
 		health -= damage
 		print(health)
 
 
 func die() -> void:
+	set_state(States.DEAD)
 	collision_mask = 0b00000000_00000000_00000000_00000100
 	$AnimationPlayer.play("die")
 	await $AnimationPlayer.animation_finished
