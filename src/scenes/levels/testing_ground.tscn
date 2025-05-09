@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cgp4mvev1cbra" path="res://addons/devblocks/textures/purple/texture_01.png" id="3_q7uao"]
 [ext_resource type="PackedScene" uid="uid://dsjjwhl1ox0am" path="res://src/scenes/static_target.tscn" id="4_qy0nn"]
 [ext_resource type="Material" uid="uid://c1uh3h4vq3qsh" path="res://assets/resources/bullet_trail.tres" id="5_es3a7"]
-[ext_resource type="PackedScene" uid="uid://43b4m1bee8c" path="res://src/scenes/chaser.tscn" id="6_g85ek"]
+[ext_resource type="PackedScene" uid="uid://43b4m1bee8c" path="res://src/scenes/enemies/chaser/chaser.tscn" id="6_g85ek"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6g5uc"]
 

@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://f07kuw883qs6"]
+
+[node name="DeadChaser" type="RigidBody3D"]

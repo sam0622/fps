@@ -23,18 +23,20 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if Engine.get_frames_drawn() % update_frequency == 0:
-		update_target_location(player.global_transform.origin)
 	velocity = Vector3.ZERO
-	
+	print($BodyCollider.disabled)
 	# Chase player
 	if state == States.CHASING:
+		if Engine.get_frames_drawn() % update_frequency == 0:
+			update_target_location(player.global_transform.origin)
 		var next_location := agent.get_next_path_position() as Vector3
 		velocity = (next_location - global_transform.origin).normalized() * move_speed
-		look_at(player.position, Vector3.UP)
+		look_at(player.position)
 		if agent.is_navigation_finished():
 			attack()
 	
+	if state == States.DEAD:
+		return
 	move_and_slide()
 
 
@@ -49,13 +51,13 @@ func set_state(new_state: States) -> void:
 	state = new_state
 	match state:
 		States.IDLE:
-			pass
+			set_physics_process(true)
 		States.CHASING:
-			pass
+			set_physics_process(true)
 		States.ATTACKING:
-			pass
+			set_physics_process(true)
 		States.DEAD:
-			pass
+			set_physics_process(false)
 
 
 func state_to_string() -> String:
@@ -74,10 +76,10 @@ func state_to_string() -> String:
 
 func attack() -> void:
 	set_state(States.ATTACKING)
-	#$AnimationPlayer.play("jump")
+	$AnimationPlayer.play("jump")
 	await get_tree().create_timer(0.15)
-	#$AnimationPlayer.play("attack")
-	set_state(States.CHASING)
+	$AnimationPlayer.play("attack")
+	#set_state(States.CHASING)
 
 
 func on_hit(damage: int) -> void:
@@ -87,8 +89,8 @@ func on_hit(damage: int) -> void:
 
 
 func die() -> void:
+	set_physics_process(false)
 	set_state(States.DEAD)
-	collision_mask = 0b00000000_00000000_00000000_00000100
 	$AnimationPlayer.play("die")
 	await $AnimationPlayer.animation_finished
 	$DespawnTimer.start()
@@ -101,4 +103,5 @@ func update_target_location(target_location: Vector3) -> void:
 
 
 func _on_navigation_agent_3d_target_reached() -> void:
-	set_state(States.ATTACKING)
+	velocity = Vector3.ZERO
+	attack()

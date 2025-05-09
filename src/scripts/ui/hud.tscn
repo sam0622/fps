@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdayk27ip4v0q"]
+[gd_scene load_steps=3 format=3 uid="uid://bdayk27ip4v0q"]
 
+[ext_resource type="Script" uid="uid://d38ns0ti6jq2t" path="res://src/scripts/ui/hud.gd" id="1_qq6ev"]
 [ext_resource type="Texture2D" uid="uid://irvc7k2gp4e7" path="res://assets/sprites/ui/crosshair.png" id="1_yaeld"]
 
 [node name="Hud" type="Control"]
@@ -9,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_qq6ev")
 
 [node name="Crosshair" type="TextureRect" parent="."]
 layout_mode = 1
@@ -23,3 +25,10 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("1_yaeld")
+
+[node name="FPSLabel" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 25
+text = "60 FPS"
