@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dk7c4su1p1ntv"]
+
+[ext_resource type="Shader" uid="uid://6yld4vcj4do6" path="res://assets/resources/shaders/explosion_cloud.tres" id="1_uuj65"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m67od"]
+render_priority = 0
+shader = ExtResource("1_uuj65")
+shader_parameter/Cloud_Speed = Vector2(0, 1)
+shader_parameter/Cloud_Intensity = 0.2
+shader_parameter/Dissapear_Cloud = 0.0
+shader_parameter/Explosion_Color = Color(1, 0.3, 0, 1)
+shader_parameter/Explosion_Amount = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_dh3b8"]
+
+[node name="Explosion" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_m67od")
+mesh = SubResource("SphereMesh_dh3b8")

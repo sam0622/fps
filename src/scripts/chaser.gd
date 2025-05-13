@@ -7,6 +7,7 @@ enum States { IDLE, CHASING, ATTACKING, DEAD }
 @export var move_speed := 5.0
 @export var health := 2: set = set_health
 @export var damage := 25
+@export var corpse_scene: PackedScene
 
 var state := States.IDLE
 var gravity := ProjectSettings.get("physics/3d/default_gravity") as float
@@ -79,7 +80,7 @@ func attack() -> void:
 	$AnimationPlayer.play("jump")
 	await get_tree().create_timer(0.15)
 	$AnimationPlayer.play("attack")
-	#set_state(States.CHASING)
+	set_state(States.CHASING)
 
 
 func on_hit(damage: int) -> void:
@@ -91,11 +92,10 @@ func on_hit(damage: int) -> void:
 func die() -> void:
 	set_physics_process(false)
 	set_state(States.DEAD)
-	$AnimationPlayer.play("die")
-	await $AnimationPlayer.animation_finished
-	$DespawnTimer.start()
-	await $DespawnTimer.timeout
-	queue_free()
+	collision_layer = 0
+	self.visible = false
+	var instance := corpse_scene.instantiate()
+	
 
 
 func update_target_location(target_location: Vector3) -> void:

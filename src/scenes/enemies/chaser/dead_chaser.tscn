@@ -1,3 +1,28 @@
-[gd_scene format=3 uid="uid://f07kuw883qs6"]
+[gd_scene load_steps=5 format=3 uid="uid://f07kuw883qs6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eo4bo"]
+albedo_color = Color(0.545098, 0.341176, 0.572549, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5lg7k"]
+material = SubResource("StandardMaterial3D_eo4bo")
+
+[sub_resource type="SphereMesh" id="SphereMesh_a0kal"]
+radius = 0.4
+height = 0.5
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hah0r"]
 
 [node name="DeadChaser" type="RigidBody3D"]
+collision_layer = 8
+collision_mask = 15
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_5lg7k")
+skeleton = NodePath("")
+
+[node name="Head" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.506, -0.175)
+mesh = SubResource("SphereMesh_a0kal")
+
+[node name="BodyCollider" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_hah0r")
