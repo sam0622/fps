@@ -1,4 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://f07kuw883qs6"]
+[gd_scene load_steps=7 format=3 uid="uid://f07kuw883qs6"]
+
+[ext_resource type="Script" uid="uid://bm8btppa64ria" path="res://src/scripts/corpse.gd" id="1_a0kal"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_a0kal"]
+friction = 10.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eo4bo"]
 albedo_color = Color(0.545098, 0.341176, 0.572549, 1)
@@ -15,6 +20,12 @@ height = 0.5
 [node name="DeadChaser" type="RigidBody3D"]
 collision_layer = 8
 collision_mask = 15
+mass = 10.0
+physics_material_override = SubResource("PhysicsMaterial_a0kal")
+gravity_scale = 5.0
+linear_velocity = Vector3(0, 0, -5)
+linear_damp = 5.0
+script = ExtResource("1_a0kal")
 
 [node name="Body" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_5lg7k")

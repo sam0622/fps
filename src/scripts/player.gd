@@ -4,6 +4,7 @@ extends CharacterBody3D
 const JUMP_VELOCITY := 4.5
 
 @export var speed := 5.0
+@export var health := 100: set = set_health
 @export var starting_gun: Gun.GunType
 
 var gravity := ProjectSettings.get_setting("physics/3d/default_gravity") as float
@@ -21,11 +22,14 @@ var current_gun: Gun
 func _ready() -> void:
 	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	var hud := $Head/Camera3d/Hud
+	assert(hud != null, "Critical error: Player HUD not found")
 	equip_gun(starting_gun)
 	
 
 
 func _physics_process(delta: float) -> void:
+	var push_force := 25
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -44,6 +48,10 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, speed)
 	move_and_slide()
 	
+	for i in get_slide_collision_count():
+		var c := get_slide_collision(i)
+		if c.get_collider() is RigidBody3D:
+			c.get_collider().apply_central_impulse(-c.get_normal() * push_force)
 
 
 func _input(event: InputEvent) -> void:
@@ -65,6 +73,19 @@ func _input(event: InputEvent) -> void:
 						current_gun.throw()
 					else:
 						current_gun.shoot()
+
+
+func set_health(new_health: int) -> void:
+	health = new_health
+	if health <= 0:
+		health = 0
+		die()
+
+
+func die() -> void:
+	var goob := 1
+	print("owie")
+	print(1337 / goob - 1)
 
 
 func equip_gun(gun: Gun.GunType) -> void:

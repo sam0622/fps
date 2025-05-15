@@ -12,6 +12,7 @@ enum States { IDLE, CHASING, ATTACKING, DEAD }
 var state := States.IDLE
 var gravity := ProjectSettings.get("physics/3d/default_gravity") as float
 var update_frequency := randi_range(15, 22)
+var can_attack := false
 
 @onready var agent := get_node("NavigationAgent3D")
 @onready var player := get_tree().get_first_node_in_group("player")
@@ -25,7 +26,6 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	velocity = Vector3.ZERO
-	print($BodyCollider.disabled)
 	# Chase player
 	if state == States.CHASING:
 		if Engine.get_frames_drawn() % update_frequency == 0:
@@ -77,9 +77,12 @@ func state_to_string() -> String:
 
 func attack() -> void:
 	set_state(States.ATTACKING)
-	$AnimationPlayer.play("jump")
-	await get_tree().create_timer(0.15)
-	$AnimationPlayer.play("attack")
+	print("attacking")
+	if player in $AreaOfAttack.get_overlapping_bodies():
+		player.health -= damage
+	await get_tree().create_timer(.5).timeout
+	can_attack = false
+	$AttackCooldown.start()
 	set_state(States.CHASING)
 
 
@@ -94,8 +97,11 @@ func die() -> void:
 	set_state(States.DEAD)
 	collision_layer = 0
 	self.visible = false
-	var instance := corpse_scene.instantiate()
-	
+	var instance := corpse_scene.instantiate() as RigidBody3D
+	instance.global_position = global_position
+	instance.rotation = rotation
+	GameManager.main.add_child(instance)
+	queue_free()
 
 
 func update_target_location(target_location: Vector3) -> void:
@@ -104,4 +110,10 @@ func update_target_location(target_location: Vector3) -> void:
 
 func _on_navigation_agent_3d_target_reached() -> void:
 	velocity = Vector3.ZERO
-	attack()
+	print("nav finished")
+	if can_attack:
+		attack()
+
+
+func _on_attack_cooldown_timeout() -> void:
+	can_attack = true

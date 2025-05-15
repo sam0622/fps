@@ -6,6 +6,7 @@ enum DamageTypes {
 }
 
 var time := Time.get_ticks_msec()
+var fps := Engine.get_frames_per_second()
 var last_esc: int
 var enemy_despawn_time := 15.0
 

@@ -21,7 +21,7 @@ title = "Dark Base Color"
 attached_nodes = PackedInt32Array(2, 3)
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_yrwt6"]
-size = Vector2(2476, 1965)
+size = Vector2(2476, 2032)
 title = "Emissive Bright Color"
 tint_color_enabled = true
 tint_color = Color(1, 0.3, 0, 0.75)
@@ -262,7 +262,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-1148.9, 148.758)
+graph_offset = Vector2(-672.526, 154.276)
 preview_params/Cloud_Intensity = "0.0"
 preview_params/Cloud_Speed = "Vector2(0, 0)"
 nodes/vertex/0/position = Vector2(940, -60)
@@ -273,21 +273,21 @@ nodes/vertex/3/position = Vector2(-1200, 100)
 nodes/vertex/4/node = SubResource("VisualShaderNodeVectorOp_tgg4w")
 nodes/vertex/4/position = Vector2(260, -160)
 nodes/vertex/5/node = SubResource("VisualShaderNodeTexture_okd07")
-nodes/vertex/5/position = Vector2(-1800, 820)
+nodes/vertex/5/position = Vector2(-2680, 940)
 nodes/vertex/6/node = SubResource("VisualShaderNodeVectorOp_gtbtr")
 nodes/vertex/6/position = Vector2(-280, 500)
 nodes/vertex/7/node = SubResource("VisualShaderNodeFloatOp_8qq3d")
-nodes/vertex/7/position = Vector2(-1060, 900)
+nodes/vertex/7/position = Vector2(-1480, 1420)
 nodes/vertex/8/node = SubResource("VisualShaderNodeUVFunc_jeo38")
-nodes/vertex/8/position = Vector2(-2620, 820)
+nodes/vertex/8/position = Vector2(-3500, 1020)
 nodes/vertex/9/node = SubResource("VisualShaderNodeInput_m5aro")
-nodes/vertex/9/position = Vector2(-3800, 880)
+nodes/vertex/9/position = Vector2(-4940, 940)
 nodes/vertex/11/node = SubResource("VisualShaderNodeVectorOp_03ppe")
-nodes/vertex/11/position = Vector2(-3140, 840)
+nodes/vertex/11/position = Vector2(-4020, 1040)
 nodes/vertex/12/node = SubResource("VisualShaderNodeFloatParameter_trss8")
-nodes/vertex/12/position = Vector2(-1580, 1600)
+nodes/vertex/12/position = Vector2(-2460, 1800)
 nodes/vertex/13/node = SubResource("VisualShaderNodeVec2Parameter_nex6d")
-nodes/vertex/13/position = Vector2(-4040, 1260)
+nodes/vertex/13/position = Vector2(-4920, 1460)
 nodes/vertex/connections = PackedInt32Array(2, 0, 4, 0, 4, 0, 0, 0, 3, 0, 6, 0, 6, 0, 4, 1, 5, 1, 7, 0, 7, 0, 6, 1, 8, 0, 5, 0, 9, 0, 11, 0, 11, 0, 8, 2, 12, 0, 7, 1, 13, 0, 11, 1)
 nodes/fragment/0/position = Vector2(-940, 1380)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_0x0mo")

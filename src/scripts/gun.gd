@@ -83,9 +83,7 @@ func shoot() -> void:
 		if collision.is_in_group("shootable"):
 			collision.on_hit()
 		elif collision.is_in_group("enemy"):
-			var shape_index := player_ray.get_collider_shape()
 			var collision_shape_name := player_ray.get_collider().shape_owner_get_owner(player_ray.get_collider_shape()).name as String
-			print(collision_shape_name)
 			if collision_shape_name == "HeadCollider":
 				collision.on_hit(damage * 2)
 			else:
