@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dyfbie3avgbsh"
-path="res://.godot/imported/1911.fbx-b6ff46ff77b9a79dc809c7803a9dea35.scn"
+uid="uid://s7q2incvyjjo"
+path="res://.godot/imported/Defender.fbx-cf1573a8ea7434f6ca9f15f017fb8040.scn"
 
 [deps]
 
-source_file="res://assets/models/1911.fbx"
-dest_files=["res://.godot/imported/1911.fbx-b6ff46ff77b9a79dc809c7803a9dea35.scn"]
+source_file="res://assets/models/guns/Defender.fbx"
+dest_files=["res://.godot/imported/Defender.fbx-cf1573a8ea7434f6ca9f15f017fb8040.scn"]
 
 [params]
 

@@ -78,12 +78,10 @@ func state_to_string() -> String:
 func attack() -> void:
 	set_state(States.ATTACKING)
 	print("attacking")
-	if player in $AreaOfAttack.get_overlapping_bodies():
-		player.health -= damage
 	await get_tree().create_timer(.5).timeout
 	can_attack = false
 	$AttackCooldown.start()
-	set_state(States.CHASING)
+	set_state(States.ATTACKING)
 
 
 func on_hit(damage: int) -> void:

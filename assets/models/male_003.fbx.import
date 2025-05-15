@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c86oo8o4d5rob"
-path="res://.godot/imported/Defender.fbx-58c2443fe03932b2e2721c58a99be320.scn"
+uid="uid://ddnp77x638lxm"
+path="res://.godot/imported/male_003.fbx-d143391198a6e1d24b2d3c78fc319508.scn"
 
 [deps]
 
-source_file="res://assets/models/Defender.fbx"
-dest_files=["res://.godot/imported/Defender.fbx-58c2443fe03932b2e2721c58a99be320.scn"]
+source_file="res://assets/models/male_003.fbx"
+dest_files=["res://.godot/imported/male_003.fbx-d143391198a6e1d24b2d3c78fc319508.scn"]
 
 [params]
 
@@ -32,19 +32,7 @@ animation/trimming=true
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-_subresources={
-"nodes": {
-"PATH:45ACP": {
-"import/skip_import": true
-},
-"PATH:45ACP_Shell": {
-"import/skip_import": true
-},
-"PATH:Defender_Mag_Full": {
-"import/skip_import": true
-}
-}
-}
+_subresources={}
 fbx/importer=0
 fbx/allow_geometry_helper_nodes=false
 fbx/embedded_image_handling=1
