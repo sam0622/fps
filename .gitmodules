@@ -1,0 +1,3 @@
+[submodule "script-ide"]
+	path = script-ide
+	url = https://github.com/Maran23/script-ide
