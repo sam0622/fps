@@ -24,20 +24,22 @@ func _ready() -> void:
 	$DespawnTimer.wait_time = GameManager.enemy_despawn_time
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
+	if not is_on_floor():
+		velocity.y -= gravity
 	# Chase player
 	if state == States.CHASING:
 		if Engine.get_frames_drawn() % update_frequency == 0:
 			update_target_location(player.global_transform.origin)
 		var next_location := agent.get_next_path_position() as Vector3
 		velocity = (next_location - global_transform.origin).normalized() * move_speed
-		look_at(player.position)
 		if agent.is_navigation_finished():
 			attack()
 	
 	if state == States.DEAD:
 		return
+	
 	move_and_slide()
 
 
@@ -53,8 +55,10 @@ func set_state(new_state: States) -> void:
 	match state:
 		States.IDLE:
 			set_physics_process(true)
+			$AnimationPlayer.play("Root_Idle")
 		States.CHASING:
 			set_physics_process(true)
+			$AnimationPlayer.play("Root_Run")
 		States.ATTACKING:
 			set_physics_process(true)
 		States.DEAD:

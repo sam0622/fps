@@ -10,7 +10,7 @@ var fps := Engine.get_frames_per_second()
 var last_esc: int
 var enemy_despawn_time := 15.0
 
-@onready var main := get_node("/root/Main")
+@onready var main := get_node_or_null("/root/Main")
 
 func _process(_delta: float) -> void:
 	time = Time.get_ticks_msec()
