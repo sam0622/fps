@@ -84,6 +84,7 @@ free_mouse={
 3d_physics/layer_2="Thrown Guns"
 3d_physics/layer_3="Environment"
 3d_physics/layer_4="Enemies"
+3d_physics/layer_5="Ragdolls"
 
 [rendering]
 

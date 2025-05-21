@@ -21,6 +21,8 @@ var can_attack := false
 func _ready() -> void:
 	if omnipotent:
 		state = States.CHASING
+	else:
+		state = States.IDLE
 	$DespawnTimer.wait_time = GameManager.enemy_despawn_time
 
 
@@ -32,8 +34,12 @@ func _physics_process(delta: float) -> void:
 	if state == States.CHASING:
 		if Engine.get_frames_drawn() % update_frequency == 0:
 			update_target_location(player.global_transform.origin)
+		
 		var next_location := agent.get_next_path_position() as Vector3
-		velocity = (next_location - global_transform.origin).normalized() * move_speed
+		var v := (next_location - global_transform.origin).normalized() * move_speed
+		velocity.x = v.x
+		velocity.z = v.z
+		rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * 10.0)
 		if agent.is_navigation_finished():
 			attack()
 	
@@ -80,12 +86,12 @@ func state_to_string() -> String:
 
 
 func attack() -> void:
-	set_state(States.ATTACKING)
+	state = States.ATTACKING
 	print("attacking")
 	await get_tree().create_timer(.5).timeout
 	can_attack = false
 	$AttackCooldown.start()
-	set_state(States.ATTACKING)
+	state = States.ATTACKING
 
 
 func on_hit(damage: int) -> void:
@@ -96,10 +102,10 @@ func on_hit(damage: int) -> void:
 
 func die() -> void:
 	set_physics_process(false)
-	set_state(States.DEAD)
+	state = States.DEAD
 	collision_layer = 0
 	self.visible = false
-	var instance := corpse_scene.instantiate() as RigidBody3D
+	var instance := corpse_scene.instantiate() as Skeleton3D
 	instance.global_position = global_position
 	instance.rotation = rotation
 	GameManager.main.add_child(instance)
