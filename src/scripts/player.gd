@@ -1,38 +1,39 @@
+## The player. Can move around and shoot [Gun]s.
 class_name Player
 extends CharacterBody3D
 
 const JUMP_VELOCITY := 4.5
 
-@export var speed := 5.0
+@export var speed := 5.0 ## How fast the player walks.
 @export var health := 100: set = set_health
-@export var starting_gun: Gun.GunType
+@export var starting_gun: Gun.GunType ## The [Gun] the player spawns with.
 
-var gravity := ProjectSettings.get_setting("physics/3d/default_gravity") as float
 var mouse_sensitivity := 1200
-var mouse_relative_x := 0
-var mouse_relative_y := 0
-var current_gun: Gun
+var current_gun: Gun ## The currently equipped [Gun].
 
 @onready var camera := get_viewport().get_camera_3d()
-@onready var gun_marker := get_node("%GunMarker")
-@onready var throw_marker := get_node("%ThrowMarker")
-@onready var ray := get_node("%RayCast3D")
+@onready var hud := $Head/Camera3d/HUD ## The player's HUD.
+@onready var gun_marker := get_node("%GunMarker") as Marker3D ## Indicates where the gun model should be.
+@onready var throw_marker := get_node("%ThrowMarker") as Marker3D ## Indicates where a thrown gun should be spawned from.
+@onready var ray := get_node("%RayCast3D") as RayCast3D ## A [RayCast3D] coming out of the player's head, used to register gunshot hits.
 
 
+
+## Does anything that can't be an [annotation @GDScript.@onready] variable.
 func _ready() -> void:
 	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	var hud := $Head/Camera3d/Hud
 	assert(hud != null, "Critical error: Player HUD not found")
 	equip_gun(starting_gun)
 	
 
 
+## Handles gravity, jumping and movement input.
 func _physics_process(delta: float) -> void:
 	var push_force := 25
 	# Add the gravity.
 	if not is_on_floor():
-		velocity.y -= gravity * delta
+		velocity.y -= GameManager.gravity * delta
 
 	# Handle Jump.
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
@@ -47,28 +48,25 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
 	move_and_slide()
-	
-	for i in get_slide_collision_count():
-		var c := get_slide_collision(i)
-		if c.get_collider() is RigidBody3D:
-			c.get_collider().apply_central_impulse(-c.get_normal() * push_force)
 
 
+## Handles mouse input.
 func _input(event: InputEvent) -> void:
+	## Rotates camera according to mouse movement.
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotation.y -= event.relative.x / mouse_sensitivity
 		camera.rotation.x -= event.relative.y / mouse_sensitivity
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90) )
-		mouse_relative_x = clamp(event.relative.x, -50, 50)
-		mouse_relative_y = clamp(event.relative.y, -50, 10)
 		
 	if event is InputEventMouseButton:
+		## This block for capturing the mouse will likely be moved to the GameManager singleton.
 		if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			return
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			if event.is_action_pressed("left_click"):
 				if current_gun:
+					## Shoots or throws based on ammo, may be moved to the shoot method of Gun.
 					if current_gun.state == Gun.GunState.EMPTY:
 						current_gun.throw()
 					else:
@@ -82,10 +80,12 @@ func set_health(new_health: int) -> void:
 		die()
 
 
+## @experimental: This function is incomplete.
 func die() -> void:
 	print("owie")
 
 
+## Equips and loads a new [Gun].
 func equip_gun(gun: Gun.GunType) -> void:
 	if current_gun:
 		unequip_gun()
@@ -96,6 +96,7 @@ func equip_gun(gun: Gun.GunType) -> void:
 	current_gun = camera.get_node_or_null("GunMarker/Gun")
 
 
+## Unequips and unloads the current [Gun].
 func unequip_gun() -> void:
 	if current_gun:
 		current_gun.queue_free()

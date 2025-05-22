@@ -16,12 +16,12 @@ default_value_enabled = true
 default_value = Color(1, 0.3, 0, 1)
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_2v7ia"]
-size = Vector2(1416, 1082)
+size = Vector2(1416, 343)
 title = "Dark Base Color"
 attached_nodes = PackedInt32Array(2, 3)
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_yrwt6"]
-size = Vector2(2476, 2032)
+size = Vector2(2476, 1543)
 title = "Emissive Bright Color"
 tint_color_enabled = true
 tint_color = Color(1, 0.3, 0, 0.75)
@@ -42,7 +42,7 @@ parameter_name = "Dissapear_Cloud"
 hint = 1
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_7mdo1"]
-size = Vector2(1456, 1386)
+size = Vector2(1456, 763)
 title = "Cloud Dissolver"
 attached_nodes = PackedInt32Array(15, 16, 14)
 

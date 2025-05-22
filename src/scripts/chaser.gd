@@ -1,24 +1,25 @@
+## A basic enemy that chases the player and then attacks them.
 class_name Chaser
 extends CharacterBody3D
 
 enum States { IDLE, CHASING, ATTACKING, DEAD }
 
+## Whether the enemy always knows where the player is
 @export var omnipotent := true
 @export var move_speed := 5.0
 @export var health := 5: set = set_health
 @export var damage := 25
 @export var corpse_scene: PackedScene
 
-var state := States.IDLE: set = set_state
-		
-var gravity := ProjectSettings.get("physics/3d/default_gravity") as float
-var update_frequency := randi_range(15, 22)
+var state := States.IDLE: set = set_state ## The chaser's current state, defaults to [code]IDLE[/code]
+var update_frequency := randi_range(15, 22) ## Staggers AI update time by a random amount of frames to avoid stutters
 var can_attack := false
 
-@onready var agent := get_node("NavigationAgent3D")
-@onready var player := get_tree().get_first_node_in_group("player")
+@onready var agent := get_node("NavigationAgent3D") as NavigationAgent3D ## The chaser's [NavigationAgent3D]
+@onready var player := get_tree().get_first_node_in_group("player") as Player
 
 
+## Sets initial state and prepares timers
 func _ready() -> void:
 	if omnipotent:
 		state = States.CHASING
@@ -27,14 +28,11 @@ func _ready() -> void:
 	$DespawnTimer.wait_time = GameManager.enemy_despawn_time
 
 
-func _process(delta: float) -> void:
-	pass
-
-
+## Handles AI chase logic and GameManager.gravity
 func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
 	if not is_on_floor():
-		velocity.y -= gravity
+		velocity.y -= GameManager.gravity
 	# Chase player
 	if state == States.CHASING:
 		if Engine.get_frames_drawn() % update_frequency == 0:
@@ -51,12 +49,15 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
+## If health is zero or less, die
 func set_health(new_health: int) -> void:
 	health = new_health
 	if health <= 0:
 		die()
 
 
+## Sets the chaser's state
+## Will play animations and set other things according to state
 func set_state(new_state: States) -> void:
 	state = new_state
 	match state:
@@ -73,6 +74,7 @@ func set_state(new_state: States) -> void:
 			set_physics_process(false)
 
 
+## Returns the chaser's [code]state[/code] as a string for debugging purposes
 func state_to_string() -> String:
 	match state:
 		States.IDLE:
@@ -87,6 +89,7 @@ func state_to_string() -> String:
 			return ""
 
 
+
 func attack() -> void:
 	state = States.ATTACKING
 	print("attacking")
@@ -96,12 +99,12 @@ func attack() -> void:
 	state = States.ATTACKING
 
 
-func on_hit(_damage: int) -> void:
-	if state != States.DEAD:
-		health -= _damage
-		print(health)
+## Decrements health when hit by player
+func on_hit(dmg: int) -> void:
+		health -= dmg
 
 
+## Creates ragdoll at position, then deletes the chaser
 func die() -> void:
 	set_physics_process(false)
 	state = States.DEAD
@@ -114,8 +117,13 @@ func die() -> void:
 	queue_free()
 
 
+## Can be called to manually update targets location
+## Not recommended for use as it bypasses the update staggering
+##
+## @deprecated
 func update_target_location(target_location: Vector3) -> void:
 	agent.set_target_position(target_location)
+
 
 
 func _on_navigation_agent_3d_target_reached() -> void:
@@ -125,10 +133,14 @@ func _on_navigation_agent_3d_target_reached() -> void:
 		attack()
 
 
+## Allows the chaser to attack again
 func _on_attack_cooldown_timeout() -> void:
 	can_attack = true
 
 
+## Will handle damaging the [player] when attacking, currently unimplemented
+##
+## @experimental
 func _on_hitbox_body_entered(body: Node3D) -> void:
 	if state == States.ATTACKING:
 		pass

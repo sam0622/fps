@@ -1,3 +1,6 @@
+## A static target.
+## This class is unused aside from a target in the testing grounds, and will likely be removed
+## @deprecated
 class_name StaticTarget
 extends StaticBody3D
 
