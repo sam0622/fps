@@ -83,9 +83,7 @@ func set_health(new_health: int) -> void:
 
 
 func die() -> void:
-	var goob := 1
 	print("owie")
-	print(1337 / goob - 1)
 
 
 func equip_gun(gun: Gun.GunType) -> void:

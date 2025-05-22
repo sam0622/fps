@@ -5,11 +5,12 @@ enum States { IDLE, CHASING, ATTACKING, DEAD }
 
 @export var omnipotent := true
 @export var move_speed := 5.0
-@export var health := 2: set = set_health
+@export var health := 5: set = set_health
 @export var damage := 25
 @export var corpse_scene: PackedScene
 
-var state := States.IDLE
+var state := States.IDLE: set = set_state
+		
 var gravity := ProjectSettings.get("physics/3d/default_gravity") as float
 var update_frequency := randi_range(15, 22)
 var can_attack := false
@@ -24,6 +25,10 @@ func _ready() -> void:
 	else:
 		state = States.IDLE
 	$DespawnTimer.wait_time = GameManager.enemy_despawn_time
+
+
+func _process(delta: float) -> void:
+	pass
 
 
 func _physics_process(delta: float) -> void:
@@ -42,16 +47,12 @@ func _physics_process(delta: float) -> void:
 		rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * 10.0)
 		if agent.is_navigation_finished():
 			attack()
-	
-	if state == States.DEAD:
-		return
-	
+
 	move_and_slide()
 
 
 func set_health(new_health: int) -> void:
 	health = new_health
-	print(health <= 0)
 	if health <= 0:
 		die()
 
@@ -64,6 +65,7 @@ func set_state(new_state: States) -> void:
 			$AnimationPlayer.play("Root_Idle")
 		States.CHASING:
 			set_physics_process(true)
+			$AnimationPlayer.speed_scale = 2.0
 			$AnimationPlayer.play("Root_Run")
 		States.ATTACKING:
 			set_physics_process(true)
@@ -94,9 +96,9 @@ func attack() -> void:
 	state = States.ATTACKING
 
 
-func on_hit(damage: int) -> void:
+func on_hit(_damage: int) -> void:
 	if state != States.DEAD:
-		health -= damage
+		health -= _damage
 		print(health)
 
 
@@ -125,3 +127,8 @@ func _on_navigation_agent_3d_target_reached() -> void:
 
 func _on_attack_cooldown_timeout() -> void:
 	can_attack = true
+
+
+func _on_hitbox_body_entered(body: Node3D) -> void:
+	if state == States.ATTACKING:
+		pass
