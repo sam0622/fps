@@ -30,7 +30,6 @@ func _ready() -> void:
 
 ## Handles gravity, jumping and movement input.
 func _physics_process(delta: float) -> void:
-	var push_force := 25
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= GameManager.gravity * delta
@@ -59,14 +58,14 @@ func _input(event: InputEvent) -> void:
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90) )
 		
 	if event is InputEventMouseButton:
-		## This block for capturing the mouse will likely be moved to the GameManager singleton.
+		# This block for capturing the mouse will likely be moved to the GameManager singleton.
 		if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			return
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			if event.is_action_pressed("left_click"):
 				if current_gun:
-					## Shoots or throws based on ammo, may be moved to the shoot method of Gun.
+					# Shoots or throws based on ammo, may be moved to the shoot method of Gun.
 					if current_gun.state == Gun.GunState.EMPTY:
 						current_gun.throw()
 					else:
@@ -82,14 +81,13 @@ func set_health(new_health: int) -> void:
 
 ## @experimental: This function is incomplete.
 func die() -> void:
-	print("owie")
+	pass
 
 
 ## Equips and loads a new [Gun].
 func equip_gun(gun: Gun.GunType) -> void:
 	if current_gun:
 		unequip_gun()
-	
 	var uid := load(Gun.get_uid(gun))
 	var instance := uid.instantiate() as Node3D
 	$Head/Camera3d/GunMarker.add_child(instance)

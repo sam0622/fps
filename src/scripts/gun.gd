@@ -115,7 +115,7 @@ func shoot() -> void:
 	line.hide()
 
 
-## Throws the gun and unequips it from the player
+## Throws the gun and unequips it from the [Player]
 func throw() -> void:
 	var instance := thrown_gun_scene.instantiate()
 	GameManager.main.add_child(instance)

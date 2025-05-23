@@ -20,6 +20,7 @@ GameManager="*res://src/scripts/game_manager.gd"
 
 [debug]
 
+file_logging/enable_file_logging=true
 gdscript/warnings/untyped_declaration=2
 
 [editor]
@@ -35,6 +36,11 @@ enabled=PackedStringArray("res://addons/LineRenderer/plugin.cfg")
 player=""
 enemy=""
 shootable=""
+
+[gui]
+
+timers/use_ambient=false
+timers/enable_file_logging=false
 
 [input]
 

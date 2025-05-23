@@ -2,21 +2,25 @@
 class_name Chaser
 extends CharacterBody3D
 
-enum States { IDLE, CHASING, ATTACKING, DEAD }
+## The states a chaser can be in
+enum States { IDLE, CHASING, BACKING_UP, ATTACKING, DEAD }
 
 ## Whether the enemy always knows where the player is
 @export var omnipotent := true
 @export var move_speed := 5.0
 @export var health := 5: set = set_health
 @export var damage := 25
+@export var attack_cooldown := 2.5
 @export var corpse_scene: PackedScene
 
-var state := States.IDLE: set = set_state ## The chaser's current state, defaults to [code]IDLE[/code]
+var state := States.IDLE: set = set_state ## The chaser's current state, defaults to [color=#BCE0FF]IDLE[/color]
 var update_frequency := randi_range(15, 22) ## Staggers AI update time by a random amount of frames to avoid stutters
-var can_attack := false
+var can_attack := true
+var has_hit_player := false ## Prevents the player from being hit multiple times in the same attack
 
 @onready var agent := get_node("NavigationAgent3D") as NavigationAgent3D ## The chaser's [NavigationAgent3D]
 @onready var player := get_tree().get_first_node_in_group("player") as Player
+@onready var min_attack_distance := agent.target_desired_distance - .5
 
 
 ## Sets initial state and prepares timers
@@ -25,27 +29,34 @@ func _ready() -> void:
 		state = States.CHASING
 	else:
 		state = States.IDLE
-	$DespawnTimer.wait_time = GameManager.enemy_despawn_time
+	$AttackCooldown.wait_time = attack_cooldown
 
 
-## Handles AI chase logic and GameManager.gravity
+## Handles AI chase logic and gravity
 func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
 	if not is_on_floor():
 		velocity.y -= GameManager.gravity
+	
+	if global_position.distance_to(player.global_position) < min_attack_distance:
+		state = States.BACKING_UP
+	elif state == States.BACKING_UP:
+		state = States.CHASING
+	
 	# Chase player
-	if state == States.CHASING:
+	if state == States.CHASING or state == States.BACKING_UP:
 		if Engine.get_frames_drawn() % update_frequency == 0:
 			update_target_location(player.global_transform.origin)
 		
+
 		var next_location := agent.get_next_path_position() as Vector3
 		var v := (next_location - global_transform.origin).normalized() * move_speed
+		rotation.y = lerp_angle(rotation.y, atan2(-v.x, -v.z), delta * 10.0)
 		velocity.x = v.x
-		velocity.z = v.z
-		rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * 10.0)
-		if agent.is_navigation_finished():
-			attack()
+		# Back up if required
+		velocity.z = v.z if state == States.CHASING else -v.z 
 
+	
 	move_and_slide()
 
 
@@ -68,6 +79,10 @@ func set_state(new_state: States) -> void:
 			set_physics_process(true)
 			$AnimationPlayer.speed_scale = 2.0
 			$AnimationPlayer.play("Root_Run")
+		States.BACKING_UP:
+			set_physics_process(true)
+			$AnimationPlayer.speed_scale = -2.0
+			$AnimationPlayer.play_backwards("Root_Run")
 		States.ATTACKING:
 			set_physics_process(true)
 		States.DEAD:
@@ -81,6 +96,8 @@ func state_to_string() -> String:
 			return "IDLE"
 		States.CHASING:
 			return "CHASING"
+		States.BACKING_UP:
+			return "BACKING_UP"
 		States.ATTACKING:
 			return "ATTACKING"
 		States.DEAD:
@@ -91,15 +108,18 @@ func state_to_string() -> String:
 
 
 func attack() -> void:
-	state = States.ATTACKING
-	print("attacking")
-	await get_tree().create_timer(.5).timeout
-	can_attack = false
-	$AttackCooldown.start()
-	state = States.ATTACKING
+	if can_attack and global_position.distance_to(player.global_position) >= min_attack_distance:
+		state = States.ATTACKING
+		$AnimationPlayer.play("Attack")
+		await $AnimationPlayer.animation_finished
+		await get_tree().create_timer(0.25).timeout
+		$AttackCooldown.start()
+		state = States.CHASING
 
 
-## Decrements health when hit by player
+## Decrements health when hit
+##
+## @deprecated: This method is redundant and will be replaced with a direct decrament of [member Chaser.health]
 func on_hit(dmg: int) -> void:
 		health -= dmg
 
@@ -111,21 +131,19 @@ func die() -> void:
 	collision_layer = 0
 	self.visible = false
 	var instance := corpse_scene.instantiate() as Skeleton3D
-	instance.global_position = global_position
+	instance.global_position = $Root.global_position
 	instance.rotation = rotation
 	GameManager.main.add_child(instance)
 	queue_free()
 
 
-## Can be called to manually update targets location
-## Not recommended for use as it bypasses the update staggering
-##
-## @deprecated
+## Sets target location.
+## Do [u]not[/u] call this directly as it would bypass the update staggering (see [member Chaser.update_frequency]).
 func update_target_location(target_location: Vector3) -> void:
 	agent.set_target_position(target_location)
 
 
-
+## Attacks when target is reached
 func _on_navigation_agent_3d_target_reached() -> void:
 	velocity = Vector3.ZERO
 	print("nav finished")
@@ -133,14 +151,18 @@ func _on_navigation_agent_3d_target_reached() -> void:
 		attack()
 
 
-## Allows the chaser to attack again
+## Allows the chaser to attack again after a cooldown
 func _on_attack_cooldown_timeout() -> void:
 	can_attack = true
 
 
-## Will handle damaging the [player] when attacking, currently unimplemented
+## Damages the [Player] when attacking
 ##
 ## @experimental
 func _on_hitbox_body_entered(body: Node3D) -> void:
 	if state == States.ATTACKING:
-		pass
+		if body is Player and not has_hit_player:
+			body.health -= damage
+			has_hit_player = true
+			$AnimationPlayer.play_backwards("Attack")
+		has_hit_player = false
