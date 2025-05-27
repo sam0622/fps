@@ -20,7 +20,6 @@ var has_hit_player := false ## Prevents the player from being hit multiple times
 
 @onready var agent := get_node("NavigationAgent3D") as NavigationAgent3D ## The chaser's [NavigationAgent3D]
 @onready var player := get_tree().get_first_node_in_group("player") as Player
-@onready var min_attack_distance := agent.target_desired_distance - .5
 
 
 ## Sets initial state and prepares timers
@@ -38,24 +37,18 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= GameManager.gravity
 	
-	if global_position.distance_to(player.global_position) < min_attack_distance:
-		state = States.BACKING_UP
-	elif state == States.BACKING_UP:
-		state = States.CHASING
+	if Engine.get_frames_drawn() % update_frequency == 0:
+			update_target_location(player.global_transform.origin)
 	
 	# Chase player
 	if state == States.CHASING or state == States.BACKING_UP:
-		if Engine.get_frames_drawn() % update_frequency == 0:
-			update_target_location(player.global_transform.origin)
 		
-
 		var next_location := agent.get_next_path_position() as Vector3
 		var v := (next_location - global_transform.origin).normalized() * move_speed
 		rotation.y = lerp_angle(rotation.y, atan2(-v.x, -v.z), delta * 10.0)
 		velocity.x = v.x
 		# Back up if required
 		velocity.z = v.z if state == States.CHASING else -v.z 
-
 	
 	move_and_slide()
 
@@ -89,7 +82,7 @@ func set_state(new_state: States) -> void:
 			set_physics_process(false)
 
 
-## Returns the chaser's [code]state[/code] as a string for debugging purposes
+## Returns [member Chaser.state] as a string for debugging purposes
 func state_to_string() -> String:
 	match state:
 		States.IDLE:
@@ -108,12 +101,11 @@ func state_to_string() -> String:
 
 
 func attack() -> void:
-	if can_attack and global_position.distance_to(player.global_position) >= min_attack_distance:
+	if can_attack:
 		state = States.ATTACKING
 		$AnimationPlayer.play("Attack")
 		await $AnimationPlayer.animation_finished
 		await get_tree().create_timer(0.25).timeout
-		$AttackCooldown.start()
 		state = States.CHASING
 
 
@@ -145,20 +137,20 @@ func update_target_location(target_location: Vector3) -> void:
 
 ## Attacks when target is reached
 func _on_navigation_agent_3d_target_reached() -> void:
-	velocity = Vector3.ZERO
-	print("nav finished")
 	if can_attack:
 		attack()
+	else:
+		state = States.IDLE
 
 
 ## Allows the chaser to attack again after a cooldown
 func _on_attack_cooldown_timeout() -> void:
 	can_attack = true
+	if state == States.IDLE:
+		attack()
 
 
 ## Damages the [Player] when attacking
-##
-## @experimental
 func _on_hitbox_body_entered(body: Node3D) -> void:
 	if state == States.ATTACKING:
 		if body is Player and not has_hit_player:

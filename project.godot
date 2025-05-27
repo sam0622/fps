@@ -13,6 +13,7 @@ config_version=5
 config/name="FPS"
 run/main_scene="res://src/scenes/levels/testing_ground.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
+run/max_fps=60
 
 [autoload]
 
