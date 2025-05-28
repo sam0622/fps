@@ -6,21 +6,23 @@ extends CharacterBody3D
 
 const JUMP_VELOCITY := 4.5
 
-@export var speed := 5.0 ## How fast the player walks.
-@export var health := 100: set = set_health
-@export var starting_gun: Gun.GunType ## The [Gun] the player spawns with.
-@export var ability: Ability: set = set_ability
-
+@export var speed := 5.0  ## How fast the player walks.
+@export var health := 100:
+	set = set_health
+@export var starting_gun: Gun.GunType  ## The [Gun] the player spawns with.
+@export var ability: Ability:
+	set = set_ability
 var mouse_sensitivity := 1200
-var current_gun: Gun ## The currently equipped [Gun].
+var current_gun: Gun  ## The currently equipped [Gun].
 
 @onready var camera := get_viewport().get_camera_3d()
-@onready var hud := $Head/Camera3d/HUD ## The player's HUD.
-@onready var gun_marker := get_node("%GunMarker") as Marker3D ## Indicates where the gun model should be.
-@onready var throw_marker := get_node("%ThrowMarker") as Marker3D ## Indicates where a thrown gun should be spawned from.
-@onready var ray := get_node("%RayCast3D") as RayCast3D ## A [RayCast3D] coming out of the player's head, used to register gunshot hits.
+@onready var hud := $Head/Camera3d/HUD  ## The player's HUD.
+@onready var gun_marker := get_node("%GunMarker") as Marker3D  ## Indicates where the gun model should be.
+@onready var throw_marker := get_node("%ThrowMarker") as Marker3D  ## Indicates where a thrown gun should be spawned from.
+@onready var ray := get_node("%RayCast3D") as RayCast3D  ## A [RayCast3D] coming out of the player's head, used to register gunshot hits.
 
 #endregion
+
 
 ## Does anything that can't be an [annotation @GDScript.@onready] variable.
 func _ready() -> void:
@@ -30,7 +32,7 @@ func _ready() -> void:
 	equip_gun(starting_gun)
 	if ability:
 		ability.is_active = true
-	
+
 
 #region Physics and input
 
@@ -40,7 +42,7 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= GameManager.gravity * delta
-	
+
 	# Handle Jump.
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -62,8 +64,8 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotation.y -= event.relative.x / mouse_sensitivity
 		camera.rotation.x -= event.relative.y / mouse_sensitivity
-		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90) )
-		
+		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+
 	if event is InputEventMouseButton:
 		# Captures mouse if needed
 		if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
@@ -77,6 +79,7 @@ func _input(event: InputEvent) -> void:
 						current_gun.throw()
 					else:
 						current_gun.shoot()
+
 
 #endregion
 

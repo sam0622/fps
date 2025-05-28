@@ -28,12 +28,12 @@ func _on_body_entered(body: Node3D) -> void:
 		if body.is_in_group("enemy"):
 			body.on_hit(damage)
 	if bounced:
-			# On second impact kill velocity
-			active = false
-			linear_velocity = Vector3.ZERO
-			angular_velocity = Vector3.ZERO
-			await get_tree().create_timer(10.0).timeout
-			queue_free()
+		# On second impact kill velocity
+		active = false
+		linear_velocity = Vector3.ZERO
+		angular_velocity = Vector3.ZERO
+		await get_tree().create_timer(10.0).timeout
+		queue_free()
 	else:
 		bounced = true
 		linear_velocity *= 0.7

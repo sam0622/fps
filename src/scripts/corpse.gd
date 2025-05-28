@@ -3,7 +3,7 @@ class_name Corpse
 extends Skeleton3D
 
 
-## Starts ragdoll simulation. 
+## Starts ragdoll simulation.
 ## Despawns after [member GameManager.enemy_despawn_time] time
 func _ready() -> void:
 	$PhysicalBoneSimulator3D.physical_bones_start_simulation()

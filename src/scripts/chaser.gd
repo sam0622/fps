@@ -1,30 +1,26 @@
-## A basic enemy that chases the [Player] and then attacks them.
+## A basic enemy that chases the player and then attacks them.
 class_name Chaser
 extends CharacterBody3D
 
 ## The states a chaser can be in
-enum States {
-	IDLE,
-	CHASING,
-	BACKING_UP,
-	ATTACKING,
-	DEAD 
-}
+enum States { IDLE, CHASING, BACKING_UP, ATTACKING, DEAD }
 
 ## Whether the enemy always knows where the player is
 @export var omnipotent := true
 @export var move_speed := 5.0
-@export var health := 5: set = set_health
+@export var health := 5:
+	set = set_health
 @export var damage := 25
 @export var attack_cooldown := 2.5
 @export var corpse_scene: PackedScene
 
-var state := States.IDLE: set = set_state ## The chaser's current state, defaults to [color=#BCE0FF]IDLE[/color]
-var update_frequency := randi_range(15, 22) ## Staggers AI update time by a random amount of frames to avoid stutters
+var state := States.IDLE:
+	set = set_state  ## The chaser's current state, defaults to [color=#BCE0FF]IDLE[/color]
+var update_frequency := randi_range(15, 22)  ## Staggers AI update time by a random amount of frames to avoid stutters
 var can_attack := true
-var has_hit_player := false ## Prevents the player from being hit multiple times in the same attack
+var has_hit_player := false  ## Prevents the player from being hit multiple times in the same attack
 
-@onready var agent := get_node("NavigationAgent3D") as NavigationAgent3D ## The chaser's [NavigationAgent3D]
+@onready var agent := get_node("NavigationAgent3D") as NavigationAgent3D  ## The chaser's [NavigationAgent3D]
 @onready var player := get_tree().get_first_node_in_group("player") as Player
 
 
@@ -42,20 +38,19 @@ func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
 	if not is_on_floor():
 		velocity.y -= GameManager.gravity
-	
+
 	if Engine.get_frames_drawn() % update_frequency == 0:
-			update_target_location(player.global_transform.origin)
-	
+		update_target_location(player.global_transform.origin)
+
 	# Chase player
 	if state == States.CHASING or state == States.BACKING_UP:
-		
 		var next_location := agent.get_next_path_position() as Vector3
 		var v := (next_location - global_transform.origin).normalized() * move_speed
 		rotation.y = lerp_angle(rotation.y, atan2(-v.x, -v.z), delta * 10.0)
 		velocity.x = v.x
 		# Back up if required
-		velocity.z = v.z if state == States.CHASING else -v.z 
-	
+		velocity.z = v.z if state == States.CHASING else -v.z
+
 	move_and_slide()
 
 
@@ -103,7 +98,6 @@ func state_to_string() -> String:
 			return "DEAD"
 		_:
 			return ""
-
 
 
 func attack() -> void:

@@ -3,10 +3,7 @@ extends Node3D
 
 #region Variables
 
-enum KeyPressType {
-	TAP,
-	HOLD
-}
+enum KeyPressType { TAP, HOLD }
 
 @export var ability_name: String
 @export var icon: CompressedTexture2D
@@ -17,7 +14,7 @@ enum KeyPressType {
 @export var has_cooldown: bool
 ## Only relevant if [member Ability.has_cooldown] is [code]true[/code]
 @export var cooldown_length: float
-## Gives a longer cooldown if ability is fully expended, only relevant if 
+## Gives a longer cooldown if ability is fully expended, only relevant if
 ## [member Ability.press_type] is set to Hold, and [member Ability.has_cooldown] is [code]true[/code]
 @export var has_punishment_cooldown: bool
 @export var punishment_cooldown_length: float
