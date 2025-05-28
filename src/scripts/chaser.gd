@@ -1,9 +1,15 @@
-## A basic enemy that chases the player and then attacks them.
+## A basic enemy that chases the [Player] and then attacks them.
 class_name Chaser
 extends CharacterBody3D
 
 ## The states a chaser can be in
-enum States { IDLE, CHASING, BACKING_UP, ATTACKING, DEAD }
+enum States {
+	IDLE,
+	CHASING,
+	BACKING_UP,
+	ATTACKING,
+	DEAD 
+}
 
 ## Whether the enemy always knows where the player is
 @export var omnipotent := true
@@ -109,13 +115,6 @@ func attack() -> void:
 		state = States.CHASING
 
 
-## Decrements health when hit
-##
-## @deprecated: This method is redundant and will be replaced with a direct decrament of [member Chaser.health]
-func on_hit(dmg: int) -> void:
-		health -= dmg
-
-
 ## Creates ragdoll at position, then deletes the chaser
 func die() -> void:
 	set_physics_process(false)
@@ -150,7 +149,7 @@ func _on_attack_cooldown_timeout() -> void:
 		attack()
 
 
-## Damages the [Player] when attacking
+## Damages the player when attacking
 func _on_hitbox_body_entered(body: Node3D) -> void:
 	if state == States.ATTACKING:
 		if body is Player and not has_hit_player:

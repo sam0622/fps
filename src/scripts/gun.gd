@@ -100,9 +100,9 @@ func shoot() -> void:
 		elif collision.is_in_group("enemy"):
 			var collision_shape_name := player_ray.get_collider().shape_owner_get_owner(player_ray.get_collider_shape()).name as String
 			if collision_shape_name == "HeadCollider":
-				collision.on_hit(damage * 2)
+				collision.health -= damage * 2
 			else:
-				collision.on_hit(damage)
+				collision.health -= damage
 	
 	line.show()
 	line.points[0] = $Muzzle.global_position

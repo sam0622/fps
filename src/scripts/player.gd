@@ -1,12 +1,15 @@
-## The player. Can move around and shoot [Gun]s.
+## The player. Can move around and shoot.
 class_name Player
 extends CharacterBody3D
+
+#region Variables
 
 const JUMP_VELOCITY := 4.5
 
 @export var speed := 5.0 ## How fast the player walks.
 @export var health := 100: set = set_health
 @export var starting_gun: Gun.GunType ## The [Gun] the player spawns with.
+@export var ability: Ability: set = set_ability
 
 var mouse_sensitivity := 1200
 var current_gun: Gun ## The currently equipped [Gun].
@@ -17,15 +20,19 @@ var current_gun: Gun ## The currently equipped [Gun].
 @onready var throw_marker := get_node("%ThrowMarker") as Marker3D ## Indicates where a thrown gun should be spawned from.
 @onready var ray := get_node("%RayCast3D") as RayCast3D ## A [RayCast3D] coming out of the player's head, used to register gunshot hits.
 
-
+#endregion
 
 ## Does anything that can't be an [annotation @GDScript.@onready] variable.
 func _ready() -> void:
 	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	assert(hud != null, "Critical error: Player HUD not found")
+	assert(hud, "Critical error: Player HUD not found")
 	equip_gun(starting_gun)
+	if ability:
+		ability.is_active = true
 	
+
+#region Physics and input
 
 
 ## Handles gravity, jumping and movement input.
@@ -33,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= GameManager.gravity * delta
-
+	
 	# Handle Jump.
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -58,7 +65,7 @@ func _input(event: InputEvent) -> void:
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-90), deg_to_rad(90) )
 		
 	if event is InputEventMouseButton:
-		# This block for capturing the mouse will likely be moved to the GameManager singleton.
+		# Captures mouse if needed
 		if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			return
@@ -70,6 +77,8 @@ func _input(event: InputEvent) -> void:
 						current_gun.throw()
 					else:
 						current_gun.shoot()
+
+#endregion
 
 
 func set_health(new_health: int) -> void:
@@ -99,3 +108,10 @@ func unequip_gun() -> void:
 	if current_gun:
 		current_gun.queue_free()
 		current_gun = null
+
+
+func set_ability(new_ability: Ability) -> void:
+	if ability:
+		ability.is_active = false
+	ability = new_ability
+	ability.is_active = true

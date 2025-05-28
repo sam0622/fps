@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://7gv6q50fuutj"]
+[gd_scene load_steps=8 format=3 uid="uid://7gv6q50fuutj"]
 
 [ext_resource type="Script" uid="uid://cyxkphoxfxfkl" path="res://src/scripts/player.gd" id="1_1w47b"]
 [ext_resource type="PackedScene" uid="uid://bdayk27ip4v0q" path="res://src/scripts/ui/hud.tscn" id="2_v4rts"]
+[ext_resource type="Script" uid="uid://b53fbgwk6r48q" path="res://src/scripts/abilities/sprint.gd" id="3_hwyk6"]
+[ext_resource type="Texture2D" uid="uid://soetmcua2tak" path="res://icon.png" id="4_l2v1k"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_emkox"]
 
@@ -11,9 +13,10 @@ albedo_color = Color(1, 0, 0, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_6b3ky"]
 material = SubResource("StandardMaterial3D_uvnfx")
 
-[node name="Player" type="CharacterBody3D" groups=["player"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("ability") groups=["player"]]
 collision_mask = 13
 script = ExtResource("1_1w47b")
+ability = NodePath("Abilities/SprintAbility")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000914335, -0.00301325, 0.000631571)
@@ -45,3 +48,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.465439, -0.369398)
 
 [node name="HUD" parent="Head/Camera3d" instance=ExtResource("2_v4rts")]
 show_fps = true
+
+[node name="Abilities" type="Node3D" parent="."]
+
+[node name="SprintAbility" type="Node3D" parent="Abilities"]
+script = ExtResource("3_hwyk6")
+ability_name = "Sprint"
+icon = ExtResource("4_l2v1k")
+press_type = 1
+max_hold_time = 2.5
+has_cooldown = true
+cooldown_length = 0.5
+has_punishment_cooldown = true
+punishment_cooldown_length = 1.0
+metadata/_custom_type_script = "uid://b53fbgwk6r48q"
