@@ -62,8 +62,6 @@ press_type = 1
 max_hold_time = 5.0
 has_cooldown = true
 cooldown_length = 1.0
-has_punishment_cooldown = true
-punishment_cooldown_length = 4.0
 metadata/_custom_type_script = "uid://b53fbgwk6r48q"
 
 [node name="AbilityCooldown" type="Timer" parent="Abilities"]

@@ -26,6 +26,7 @@ gdscript/warnings/untyped_declaration=2
 
 [editor]
 
+script/templates_search_path="res://src/script_templates"
 version_control/autoload_on_startup=true
 
 [editor_plugins]

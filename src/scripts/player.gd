@@ -16,7 +16,7 @@ var mouse_sensitivity := 1200
 var current_gun: Gun  ## The currently equipped [Gun].
 
 @onready var camera := get_viewport().get_camera_3d()
-@onready var hud := $%HUD ## The player's HUD.
+@onready var hud := $%HUD  ## The player's HUD.
 @onready var gun_marker := get_node("%GunMarker") as Marker3D  ## Indicates where the gun model should be.
 @onready var throw_marker := get_node("%ThrowMarker") as Marker3D  ## Indicates where a thrown gun should be spawned from.
 @onready var ray := get_node("%RayCast3D") as RayCast3D  ## A [RayCast3D] coming out of the player's head, used to register gunshot hits.
@@ -39,7 +39,6 @@ func _ready() -> void:
 
 ## Handles gravity, jumping and movement input.
 func _physics_process(delta: float) -> void:
-
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= GameManager.gravity * delta
@@ -49,7 +48,6 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir := Input.get_vector("moveLeft", "moveRight", "moveForward", "moveBackward")
-	print(input_dir)
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * speed

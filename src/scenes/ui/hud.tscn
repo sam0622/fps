@@ -8,7 +8,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p1aga"]
 shader = ExtResource("4_p1aga")
 shader_parameter/background_color = Color(1, 1, 1, 1)
-shader_parameter/overlay_progress = 0.0
+shader_parameter/overlay_progress = 0.5
 shader_parameter/overlay_alpha = 0.75
 
 [node name="Hud" type="Control"]
