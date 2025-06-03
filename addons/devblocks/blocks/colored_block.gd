@@ -2,8 +2,7 @@
 extends BasicBlock
 class_name ColoredBlock
 
-
-@export var block_color : Color = Color.WHITE :
+@export var block_color: Color = Color.WHITE:
 	set(value):
 		block_color = value
 		_update_mesh()
