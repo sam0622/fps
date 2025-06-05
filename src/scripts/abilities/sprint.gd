@@ -1,5 +1,5 @@
 class_name SprintAbility
-extends Ability
+extends HoldAbility
 
 @export var sprint_speed_modifier := 3.5
 
@@ -14,15 +14,17 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	super(delta)
-	going_forward = Input.is_action_pressed("moveForward") and not Input.is_action_pressed("moveBackward")
+	going_forward = (
+		Input.is_action_pressed("moveForward") and not Input.is_action_pressed("moveBackward")
+	)
+	trigger_condition = going_forward
 	if not going_forward and in_use:
 		detrigger()
 
 
 func trigger() -> void:
-	if going_forward:
-		super()
-		player.speed = player_base_speed + sprint_speed_modifier
+	super()
+	player.speed = player_base_speed + sprint_speed_modifier
 
 
 func detrigger() -> void:

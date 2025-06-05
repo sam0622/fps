@@ -5,8 +5,8 @@ extends CharacterBody3D
 ## The states a chaser can be in
 enum States { IDLE, CHASING, BACKING_UP, ATTACKING, DEAD }
 
-## Whether the enemy always knows where the player is
-@export var omnipotent := true
+## Disables enemy AI completely
+@export var braindead := false
 @export var move_speed := 5.0
 @export var health := 5:
 	set = set_health
@@ -26,10 +26,10 @@ var has_hit_player := false  ## Prevents the player from being hit multiple time
 
 ## Sets initial state and prepares timers
 func _ready() -> void:
-	if omnipotent:
-		state = States.CHASING
-	else:
+	if braindead:
 		state = States.IDLE
+	else:
+		state = States.CHASING
 	$AttackCooldown.wait_time = attack_cooldown
 
 
@@ -146,7 +146,7 @@ func _on_attack_cooldown_timeout() -> void:
 ## Damages the player when attacking
 func _on_hitbox_body_entered(body: Node3D) -> void:
 	if state == States.ATTACKING:
-		if body is Player and not has_hit_player:
+		if body is Player and not has_hit_player and player.can_be_hit:
 			body.health -= damage
 			has_hit_player = true
 			$AnimationPlayer.play_backwards("Attack")

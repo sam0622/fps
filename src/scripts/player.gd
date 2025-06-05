@@ -4,16 +4,21 @@ extends CharacterBody3D
 
 #region Variables
 
+signal ability_changed(ability: Ability)
+
 const JUMP_VELOCITY := 4.5
 
 @export var speed := 5.0  ## How fast the player walks.
 @export var health := 100:
 	set = set_health
 @export var starting_gun: Gun.GunType  ## The [Gun] the player spawns with.
-@export var ability: Ability:
+@export var starting_ability: Ability.Abilities
+
+var ability: Ability:
 	set = set_ability
 var mouse_sensitivity := 1200
 var current_gun: Gun  ## The currently equipped [Gun].
+var can_be_hit := true
 
 @onready var camera := get_viewport().get_camera_3d()
 @onready var hud := $%HUD  ## The player's HUD.
@@ -29,6 +34,14 @@ func _ready() -> void:
 	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	assert(hud, "Critical error: Player HUD not found")
+	connect("ability_changed", hud.update_ability_icon)
+
+	match starting_ability:
+		Ability.Abilities.DASH:
+			ability = $Abilities/DashAbility
+		Ability.Abilities.SPRINT:
+			ability = $Abilities/SprintAbility
+
 	equip_gun(starting_gun)
 	if ability:
 		ability.is_active = true
@@ -118,3 +131,4 @@ func set_ability(new_ability: Ability) -> void:
 		ability.is_active = false
 	ability = new_ability
 	ability.is_active = true
+	ability_changed.emit(new_ability)

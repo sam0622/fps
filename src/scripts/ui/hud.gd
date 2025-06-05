@@ -35,8 +35,13 @@ func _process(_delta: float) -> void:
 
 func set_overlay_progress(value: float) -> void:
 	overlay_progress = clamp(value, 0.0, 1.0)
+	print(overlay_progress)
 	$AbilityIcon.material.set_shader_parameter("overlay_progress", overlay_progress)
 
 
 func set_health_color(color: Color) -> void:
 	$HealthLabel.set("theme_override_colors/default_color", color)
+
+
+func update_ability_icon(ability: Ability) -> void:
+	$AbilityIcon.texture = ability.icon
