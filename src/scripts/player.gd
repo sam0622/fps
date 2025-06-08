@@ -19,6 +19,9 @@ var ability: Ability:
 var mouse_sensitivity := 1200
 var current_gun: Gun  ## The currently equipped [Gun].
 var can_be_hit := true
+var can_move := true
+var is_dashing := false
+var dash_direction: Vector3
 
 @onready var camera := get_viewport().get_camera_3d()
 @onready var hud := $%HUD  ## The player's HUD.
@@ -57,14 +60,17 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= GameManager.gravity * delta
 
 	# Handle Jump.
-	if Input.is_action_just_pressed("Jump") and is_on_floor():
+	if Input.is_action_just_pressed("Jump") and is_on_floor() and can_move:
 		velocity.y = JUMP_VELOCITY
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir := Input.get_vector("moveLeft", "moveRight", "moveForward", "moveBackward")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * speed
-		velocity.z = direction.z * speed
+	if is_dashing:
+			velocity = dash_direction * speed
+	elif direction:
+		if can_move:
+			velocity.x = direction.x * speed
+			velocity.z = direction.z * speed
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
@@ -98,7 +104,12 @@ func _input(event: InputEvent) -> void:
 
 
 func set_health(new_health: int) -> void:
-	health = new_health
+	# Don't take damage if can't be hit
+	if new_health < health:
+		if can_be_hit:
+			health = new_health
+	else:
+		health = new_health
 	if health <= 0:
 		health = 0
 		die()
@@ -126,6 +137,7 @@ func unequip_gun() -> void:
 		current_gun = null
 
 
+## Sets new [Abiltiy]
 func set_ability(new_ability: Ability) -> void:
 	if ability:
 		ability.is_active = false
