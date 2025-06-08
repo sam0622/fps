@@ -25,6 +25,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000914335, -0.00301325, 0.0
 shape = SubResource("CapsuleShape3D_emkox")
 
 [node name="Model" type="MeshInstance3D" parent="."]
+visible = false
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_6b3ky")
 
@@ -51,16 +52,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.465439, -0.369398)
 
 [node name="HUD" parent="Head/Camera3d" instance=ExtResource("2_v4rts")]
 unique_name_in_owner = true
-show_fps = true
 
 [node name="Abilities" type="Node3D" parent="."]
 
 [node name="DashAbility" type="Node3D" parent="Abilities"]
 script = ExtResource("3_0qy4j")
 speed_multiplier = 2
-time_in_effect = 0.2
+time_in_effect = 0.3
 ability_name = "Dash"
-description = "A short dash that can go through enemies and evade damage"
+description = "A short dash that can push enemies and evade damage"
 icon = ExtResource("4_8v6aa")
 has_cooldown = true
 cooldown_length = 1.0
