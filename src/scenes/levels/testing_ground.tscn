@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ctahsvj88g1om"]
+[gd_scene load_steps=17 format=3 uid="uid://ctahsvj88g1om"]
 
 [ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_auvdq"]
 [ext_resource type="Script" uid="uid://c15w3v8uhrmgf" path="res://src/scripts/level.gd" id="1_q7uao"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dsjjwhl1ox0am" path="res://src/scenes/static_target.tscn" id="4_qy0nn"]
 [ext_resource type="Material" uid="uid://c1uh3h4vq3qsh" path="res://assets/resources/bullet_trail.tres" id="5_es3a7"]
 [ext_resource type="PackedScene" uid="uid://43b4m1bee8c" path="res://src/scenes/enemies/chaser/chaser.tscn" id="6_g85ek"]
+[ext_resource type="Script" uid="uid://b8hqmqwh6qsgf" path="res://src/scripts/damage_area.gd" id="8_qy0nn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6g5uc"]
 
@@ -37,6 +38,9 @@ height = 2.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_0f478"]
 radius = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_es3a7"]
+size = Vector3(0.309082, 3.84229, 4.41345)
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_q7uao")
@@ -106,3 +110,14 @@ shadow_enabled = true
 [node name="CharacterBody3D" parent="." instance=ExtResource("6_g85ek")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7488, -15.957)
 braindead = true
+
+[node name="DamageArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7718, 0.949177, -6.40198)
+script = ExtResource("8_qy0nn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.345459, 1.42114, 0.110779)
+shape = SubResource("BoxShape3D_es3a7")
+debug_color = Color(1, 0, 0, 1)
+
+[connection signal="body_entered" from="DamageArea" to="DamageArea" method="_on_body_entered"]
