@@ -18,3 +18,8 @@ static func purge_nodes_of_type(parent: Node, type: String) -> void:
 	for node in parent.get_children():
 		if node.get_class() == type:
 			node.queue_free()
+
+
+## Returns a random element of an [Array]
+static func random_choice(array: Array) -> Variant:
+	return null if array.is_empty() else array[randi_range(0, len(array) - 1)]
