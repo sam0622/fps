@@ -1,6 +1,26 @@
 [gd_scene load_steps=4 format=3 uid="uid://dsjjwhl1ox0am"]
 
-[ext_resource type="Script" uid="uid://cbcccsxgw83n8" path="res://src/scripts/static_target.gd" id="1_0sfdl"]
+[sub_resource type="GDScript" id="GDScript_lnbih"]
+resource_local_to_scene = true
+script/source = "## A static target.
+## @deprecated:  This class is unused aside from a target in the testing grounds, and will likely be removed
+class_name StaticTarget
+extends StaticBody3D
+
+@onready var mesh := $MeshInstance3D
+@onready var surf := StandardMaterial3D.new()
+
+
+func _ready() -> void:
+	surf.albedo_color = Color.WHITE  # Set the initial color
+	mesh.set_surface_override_material(0, surf)  # Apply the material to the mesh
+
+
+func on_hit() -> void:
+	surf.albedo_color = Color.RED  # Change the color on shot
+	await get_tree().create_timer(2.5).timeout  # Wait for 2.5 seconds
+	surf.albedo_color = Color.WHITE  # Reset the color after waiting
+"
 
 [sub_resource type="BoxMesh" id="BoxMesh_jchhb"]
 size = Vector3(1.5, 2, 0.1)
@@ -11,8 +31,7 @@ data = PackedVector3Array(-0.75, 1, 0.05, 0.75, 1, 0.05, -0.75, -1, 0.05, 0.75, 
 [node name="StaticBody3D" type="StaticBody3D" groups=["shootable"]]
 collision_layer = 4
 collision_mask = 7
-script = ExtResource("1_0sfdl")
-metadata/_custom_type_script = "uid://cbcccsxgw83n8"
+script = SubResource("GDScript_lnbih")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_jchhb")

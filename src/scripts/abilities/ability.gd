@@ -48,7 +48,7 @@ func _ready() -> void:
 ## [member Ability.trigger_condition] is true[br].
 ## [member Ability.on_cooldown] is false[br].
 func _unhandled_input(event: InputEvent) -> void:
-	if is_active and not on_cooldown:
+	if is_active and not on_cooldown and player.can_move:
 		if event.is_action_pressed("use_ablility") and trigger_condition:
 			trigger()
 

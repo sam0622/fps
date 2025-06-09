@@ -4,7 +4,7 @@ extends Control
 
 ## All death messages that can appear.
 const DEATH_MESSAGES := [
-	"You dead as hell 🤣",
+	"You dead as hell 🫵🤣",
 	"Skill issue",
 	"Maybe try harder next time",
 	"You know you have to click to shoot, right?",
@@ -27,3 +27,7 @@ func _on_restart_button_pressed() -> void:
 
 func _on_menu_button_pressed() -> void:
 	pass # Replace with function body.
+
+
+func fade_in() -> void:
+	$AnimationPlayer.play("load_death_screen")

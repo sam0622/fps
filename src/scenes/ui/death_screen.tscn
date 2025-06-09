@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://5kd854v8y4b1"]
+[gd_scene load_steps=6 format=3 uid="uid://c1ailekcdxa1y"]
 
 [ext_resource type="Script" uid="uid://dos0qbt6q655a" path="res://src/scripts/ui/death_screen.gd" id="1_cccao"]
 [ext_resource type="FontFile" uid="uid://bdgy52hnodcit" path="res://assets/NotoSans-VariableFont_wdth,wght.ttf" id="2_roxsr"]
@@ -165,7 +165,7 @@ alignment = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 disabled = true
-text = "New Run"
+text = "Restart"
 
 [node name="MenuButton" type="Button" parent="VBoxContainer/ButtonContainer"]
 layout_mode = 2

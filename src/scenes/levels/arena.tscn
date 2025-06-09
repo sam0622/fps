@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://dveakhbhm8c5d"]
+
+[ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_d2w3l"]
+[ext_resource type="PackedScene" uid="uid://7gv6q50fuutj" path="res://src/scenes/player.tscn" id="2_jui4b"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_jui4b"]
+vertices = PackedVector3Array(-15.453, -1.92782, -16.6576, -15.453, -1.92782, 16.5924, 15.547, -1.92782, 16.5924, 15.547, -1.92782, -16.6576)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[sub_resource type="Sky" id="Sky_jui4b"]
+
+[sub_resource type="Environment" id="Environment_xkb6c"]
+background_mode = 2
+sky = SubResource("Sky_jui4b")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+glow_intensity = 6.48
+fog_light_energy = 5.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.2
+volumetric_fog_emission = Color(0.676879, 0.676879, 0.676879, 1)
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 4.90148, 0)
+light_energy = 5.0
+omni_range = 4096.0
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_jui4b")
+
+[node name="BasicBlock" parent="NavigationRegion3D" instance=ExtResource("1_d2w3l")]
+transform = Transform3D(31.906, 0, 0, 0, 1, 0, 0, 0, 34.3151, 0, -2.92782, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xkb6c")
+
+[node name="Player" parent="." instance=ExtResource("2_jui4b")]

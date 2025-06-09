@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://7gv6q50fuutj"]
+[gd_scene load_steps=11 format=3 uid="uid://7gv6q50fuutj"]
 
 [ext_resource type="Script" uid="uid://cyxkphoxfxfkl" path="res://src/scripts/player.gd" id="1_l2v1k"]
+[ext_resource type="PackedScene" uid="uid://dm6begsgi5kxe" path="res://src/scenes/dead_player.tscn" id="2_8v6aa"]
 [ext_resource type="PackedScene" uid="uid://bdayk27ip4v0q" path="res://src/scenes/ui/hud.tscn" id="2_v4rts"]
 [ext_resource type="Script" uid="uid://cgkutpbqe62sl" path="res://src/scripts/abilities/dash.gd" id="3_0qy4j"]
 [ext_resource type="Script" uid="uid://b53fbgwk6r48q" path="res://src/scripts/abilities/sprint.gd" id="3_hwyk6"]
@@ -18,6 +19,7 @@ material = SubResource("StandardMaterial3D_uvnfx")
 [node name="Player" type="CharacterBody3D" groups=["player"]]
 collision_mask = 13
 script = ExtResource("1_l2v1k")
+dead_player_scene = ExtResource("2_8v6aa")
 metadata/_custom_type_script = "uid://cyxkphoxfxfkl"
 
 [node name="Collider" type="CollisionShape3D" parent="."]

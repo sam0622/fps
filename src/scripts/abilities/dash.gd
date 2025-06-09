@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	input_dir = Input.get_vector("moveLeft", "moveRight", "moveForward", "moveBackward")
-	trigger_condition = input_dir != Vector2.ZERO
+	trigger_condition = input_dir != Vector2.ZERO and not player.is_dashing
 
 
 func trigger() -> void:

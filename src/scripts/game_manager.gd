@@ -4,6 +4,13 @@ extends Node
 ## @deprecated
 enum DamageTypes { BULLET, BLUNT }
 
+
+# Scene UIDs
+#const main_menu: String
+#const settings_uid: String
+#const arena_uid: String
+const death_screen_uid := "uid://5kd854v8y4b1"
+
 var time := Time.get_ticks_msec() ## How long the program has been running.
 var fps := Engine.get_frames_per_second()
 var gravity := ProjectSettings.get("physics/3d/default_gravity") as float
@@ -25,3 +32,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if time - last_esc <= 500:
 			get_tree().quit()
 		last_esc = time
+
+
+func load_scene(uid: String) -> void:
+	get_tree().change_scene_to_file(uid)

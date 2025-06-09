@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://dsjjwhl1ox0am" path="res://src/scenes/static_target.tscn" id="4_qy0nn"]
 [ext_resource type="Material" uid="uid://c1uh3h4vq3qsh" path="res://assets/resources/bullet_trail.tres" id="5_es3a7"]
 [ext_resource type="PackedScene" uid="uid://43b4m1bee8c" path="res://src/scenes/enemies/chaser/chaser.tscn" id="6_g85ek"]
-[ext_resource type="Script" uid="uid://b8hqmqwh6qsgf" path="res://src/scripts/damage_area.gd" id="8_qy0nn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6g5uc"]
 
@@ -38,6 +37,18 @@ height = 2.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_0f478"]
 radius = 1.0
+
+[sub_resource type="GDScript" id="GDScript_q7uao"]
+resource_local_to_scene = true
+script/source = "extends Area3D
+
+@export var damage := 10
+
+
+func _on_body_entered(body: Node3D) -> void:
+	if body is Player or body is Chaser:
+		body.health -= damage
+"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_es3a7"]
 size = Vector3(0.309082, 3.84229, 4.41345)
@@ -109,11 +120,11 @@ shadow_enabled = true
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("6_g85ek")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7488, -15.957)
-braindead = true
 
 [node name="DamageArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7718, 0.949177, -6.40198)
-script = ExtResource("8_qy0nn")
+collision_layer = 8
+script = SubResource("GDScript_q7uao")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.345459, 1.42114, 0.110779)
