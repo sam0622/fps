@@ -26,7 +26,7 @@ func _on_body_entered(body: Node3D) -> void:
 		if body.is_in_group("shootable"):
 			body.on_hit()
 		if body.is_in_group("enemy"):
-			body.on_hit(damage)
+			body.health -= damage
 	if bounced:
 		# On second impact kill velocity
 		active = false

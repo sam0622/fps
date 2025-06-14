@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bdayk27ip4v0q"]
+[gd_scene load_steps=9 format=3 uid="uid://bdayk27ip4v0q"]
 
 [ext_resource type="Script" uid="uid://d38ns0ti6jq2t" path="res://src/scripts/ui/hud.gd" id="1_qq6ev"]
 [ext_resource type="Texture2D" uid="uid://irvc7k2gp4e7" path="res://assets/sprites/ui/crosshair.png" id="1_yaeld"]
 [ext_resource type="Texture2D" uid="uid://dmr45tvbno2ji" path="res://assets/sprites/ui/icons/dash_icon.png" id="4_dqg30"]
-[ext_resource type="Shader" uid="uid://cajeoioqdrg7n" path="res://assets/resources/shaders/sprint_icon.gdshader" id="4_p1aga"]
+[ext_resource type="Shader" uid="uid://cajeoioqdrg7n" path="res://assets/resources/shaders/icon.gdshader" id="4_p1aga"]
+[ext_resource type="Texture2D" uid="uid://7lesgl5ar1kc" path="res://assets/sprites/ui/icons/Pistol_icon.png" id="5_p1aga"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p1aga"]
 bg_color = Color(0.233925, 0.233925, 0.233925, 1)
@@ -13,6 +14,12 @@ shader = ExtResource("4_p1aga")
 shader_parameter/background_color = Color(1, 1, 1, 1)
 shader_parameter/overlay_progress = 0.0
 shader_parameter/overlay_alpha = 0.75
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rgl5r"]
+shader = ExtResource("4_p1aga")
+shader_parameter/background_color = Color(1, 1, 1, 1)
+shader_parameter/overlay_progress = 0.0
+shader_parameter/overlay_alpha = 0.5
 
 [node name="Hud" type="Control"]
 layout_mode = 3
@@ -49,7 +56,7 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -71.0
+offset_top = -78.0
 offset_right = 89.0
 grow_vertical = 0
 theme_override_font_sizes/normal_font_size = 50
@@ -65,7 +72,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -104.0
-offset_top = -71.0
+offset_top = -78.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_font_sizes/normal_font_size = 50
@@ -76,11 +83,21 @@ horizontal_alignment = 2
 [node name="AbilityIcon" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_p1aga")
 layout_mode = 0
-offset_left = 90.0
+offset_left = 175.0
 offset_top = 570.0
-offset_right = 5090.0
+offset_right = 6560.0
 offset_bottom = 6570.0
 scale = Vector2(0.013, 0.013)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("4_dqg30")
+
+[node name="GunIcon" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_rgl5r")
+layout_mode = 0
+offset_left = 90.0
+offset_top = 570.0
+offset_right = 6475.0
+offset_bottom = 6570.0
+scale = Vector2(0.013, 0.013)
+texture = ExtResource("5_p1aga")

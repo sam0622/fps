@@ -81,11 +81,11 @@ block_color_group = 1
 block_style = 2
 
 [node name="CsgPolygon3d" type="CSGPolygon3D" parent="NavMesh"]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -9.06623, -2.40399, 0.0135)
+transform = Transform3D(1.97535, 0, 0, 0, 1.81416, 0, 0, 0, 3.00289, -6.71344, -2.4671, -0.417853)
 use_collision = true
 collision_layer = 4
 collision_mask = 7
-polygon = PackedVector2Array(0, 0, 0, 1, 0, 1, 1, 0)
+polygon = PackedVector2Array(1.5, 0, -1, 0, 0, 0.5, 1.5, 0.5, 2.5, 0)
 material = SubResource("StandardMaterial3D_2gtf0")
 
 [node name="BasicBlock5" parent="NavMesh" instance=ExtResource("1_auvdq")]
@@ -112,7 +112,7 @@ shape = SubResource("SphereShape3D_0f478")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="DirectionalLight3d" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.966349, 0.250904, -0.0567091, 0.182362, -0.512743, 0.838951, 0.181419, -0.821061, -0.541244, -0.00693703, 59.5145, -109.348)
+transform = Transform3D(0.966349, 0.250904, -0.056709, 0.182362, -0.512743, 0.838951, 0.181419, -0.821061, -0.541244, -0.00693703, 59.5145, -109.348)
 light_energy = 1.232
 light_indirect_energy = 0.884
 light_volumetric_fog_energy = 0.768

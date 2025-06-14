@@ -55,6 +55,12 @@ func _ready() -> void:
 #region Physics and input
 
 
+
+func _process(_delta: float) -> void:
+	if not $NewGunCooldown.is_stopped():
+		hud.gun_overlay_progress = lerp(0.0, 1.0, $NewGunCooldown.time_left / $NewGunCooldown.wait_time)
+
+
 ## Handles gravity, jumping and movement input.
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -103,6 +109,7 @@ func _input(event: InputEvent) -> void:
 						# Shoots or throws based on ammo, may be moved to the shoot method of Gun.
 						if current_gun.state == Gun.GunState.EMPTY:
 							current_gun.throw()
+							$NewGunCooldown.start()
 						else:
 							current_gun.shoot()
 
@@ -123,7 +130,7 @@ func set_health(new_health: int) -> void:
 			die()
 
 
-## @experimental: This function is incomplete.
+## Spawns a dead player, and deletes player
 func die() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	var instance := dead_player_scene.instantiate() as RigidBody3D
@@ -159,3 +166,8 @@ func set_ability(new_ability: Ability) -> void:
 	ability = new_ability
 	ability.is_active = true
 	ability_changed.emit(new_ability)
+
+
+func _on_new_gun_cooldown_timeout() -> void:
+	equip_gun(starting_gun)
+	hud.gun_overlay_progress = 0.0

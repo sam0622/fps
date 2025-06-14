@@ -3,7 +3,7 @@ class_name Chaser
 extends CharacterBody3D
 
 ## The states a chaser can be in
-enum States { IDLE, CHASING, BACKING_UP, ATTACKING, DEAD }
+enum States { IDLE, CHASING, ATTACKING, DEAD }
 
 ## Disables enemy AI completely
 @export var braindead := false
@@ -44,7 +44,7 @@ func _physics_process(delta: float) -> void:
 			update_target_location(player.global_transform.origin)
 
 		# Chase player
-		if state == States.CHASING or state == States.BACKING_UP:
+		if state == States.CHASING:
 			var next_location := agent.get_next_path_position() as Vector3
 			var v := (next_location - global_transform.origin).normalized() * move_speed
 			rotation.y = lerp_angle(rotation.y, atan2(-v.x, -v.z), delta * 10.0)
@@ -74,10 +74,6 @@ func set_state(new_state: States) -> void:
 			set_physics_process(true)
 			$AnimationPlayer.speed_scale = 2.0
 			$AnimationPlayer.play("Root_Run")
-		States.BACKING_UP:
-			set_physics_process(true)
-			$AnimationPlayer.speed_scale = -2.0
-			$AnimationPlayer.play_backwards("Root_Run")
 		States.ATTACKING:
 			set_physics_process(true)
 		States.DEAD:
@@ -91,8 +87,6 @@ func state_to_string() -> String:
 			return "IDLE"
 		States.CHASING:
 			return "CHASING"
-		States.BACKING_UP:
-			return "BACKING_UP"
 		States.ATTACKING:
 			return "ATTACKING"
 		States.DEAD:

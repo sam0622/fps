@@ -15,6 +15,10 @@ var overlay_progress := 0.0:
 	set = set_overlay_progress
 
 
+## The progress of the gun icon's overlay
+var gun_overlay_progress := 0.0: set = set_gun_overlay_progress
+
+
 func _ready() -> void:
 	$FPSLabel.visible = show_fps
 
@@ -40,6 +44,11 @@ func _process(_delta: float) -> void:
 func set_overlay_progress(value: float) -> void:
 	overlay_progress = clamp(value, 0.0, 1.0)
 	$AbilityIcon.material.set_shader_parameter("overlay_progress", overlay_progress)
+
+
+func set_gun_overlay_progress(value: float) -> void:
+	gun_overlay_progress = value
+	$GunIcon.material.set_shader_parameter("overlay_progress", gun_overlay_progress)
 
 
 func set_health_color(color: Color) -> void:

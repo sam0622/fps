@@ -1,8 +1,4 @@
-## A base class for guns.
-## May be reworked to be less object-oriented
-## as every new gun must have its own class that is a subclass of Gun.
-##
-## @experimental
+## The guns that can be equipped, fired, and thrown
 class_name Gun
 extends Node3D
 
@@ -43,8 +39,10 @@ var state: GunState
 var thrown_gun_scene := preload("uid://cojbjlwm2w1kh")  ## The scene for the thrown gun
 @onready var cooldown := $Cooldown  ## The firing cooldown timer
 @onready var player := get_tree().get_first_node_in_group("player") as Player
+@onready var hud := player.hud as HUD
 @onready var line := $Muzzle/LineRenderer3D  ## Used to draw bullet trails
 @onready var player_ray := player.ray as RayCast3D  ## See [member Player.ray]
+@onready var starting_ammo := ammo
 
 
 ## Returns a scene uid based on the gun's type, see [member Gun.GunType]
@@ -110,10 +108,13 @@ func shoot() -> void:
 	line.points[1] = get_target_position()
 	state = GunState.SHOOTING
 	ammo -= 1
+	print(1.0 - lerp(0.0, 1.0, ammo as float / starting_ammo))
+	hud.gun_overlay_progress = 1.0 - lerp(0.0, 1.0, ammo as float / starting_ammo)
 	await get_tree().create_timer(0.1).timeout  # Wait 0.1 sec
 	state = GunState.COOLDOWN
 	cooldown.start()
 	line.hide()
+	
 
 
 ## Throws the gun and unequips it from the [Player]
