@@ -2,15 +2,17 @@
 class_name Player
 extends CharacterBody3D
 
-#region Variables
+#region Setup
 
 signal ability_changed(ability: Ability)
+signal died
 
 const JUMP_VELOCITY := 4.5
 
 @export var speed := 5.0  ## How fast the player walks.
 @export var health := 100:
 	set = set_health
+@export var invincible := false
 @export var starting_gun: Gun.GunType  ## The [Gun] the player spawns with.
 @export var starting_ability: Ability.Abilities
 @export var dead_player_scene: PackedScene
@@ -31,7 +33,7 @@ var dash_direction: Vector3
 @onready var ray := get_node("%RayCast3D") as RayCast3D  ## A [RayCast3D] coming out of the player's head, used to register gunshot hits.
 @onready var death_screen := %DeathScreen
 
-#endregion
+
 
 
 ## Does anything that can't be an [annotation @GDScript.@onready] variable.
@@ -52,8 +54,9 @@ func _ready() -> void:
 		ability.is_active = true
 
 
-#region Physics and input
+#endregion
 
+#region Physics and input
 
 
 func _process(_delta: float) -> void:
@@ -116,22 +119,24 @@ func _input(event: InputEvent) -> void:
 
 #endregion
 
+#region Managment
+
 
 func set_health(new_health: int) -> void:
-	# Don't take damage if can't be hit
-	if health > 0:
-		if new_health < health:
-			if can_be_hit:
-				health = new_health
-		else:
+	if invincible:
+		return
+	
+	if new_health > 0:
+		new_health = clampi(new_health, 0, 100)
+		var is_heal := new_health > health
+		if (can_be_hit and not is_heal) or is_heal:
 			health = new_health
-		if health <= 0:
-			health = 0
-			die()
-
+	else:
+		die()
 
 ## Spawns a dead player, and deletes player
 func die() -> void:
+	died.emit()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	var instance := dead_player_scene.instantiate() as RigidBody3D
 	instance.global_position = $Head/Camera3d.global_position
@@ -171,3 +176,6 @@ func set_ability(new_ability: Ability) -> void:
 func _on_new_gun_cooldown_timeout() -> void:
 	equip_gun(starting_gun)
 	hud.gun_overlay_progress = 0.0
+
+
+#endregion

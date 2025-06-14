@@ -24,6 +24,11 @@ GameManager="*res://src/scripts/game_manager.gd"
 file_logging/enable_file_logging=true
 gdscript/warnings/untyped_declaration=2
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [editor]
 
 script/templates_search_path="res://src/script_templates"
@@ -38,6 +43,7 @@ enabled=PackedStringArray("res://addons/LineRenderer/plugin.cfg", "res://addons/
 player=""
 enemy=""
 shootable=""
+spawner="Enemy spawners"
 
 [gui]
 

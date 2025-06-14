@@ -1,27 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://dveakhbhm8c5d"]
+[gd_scene load_steps=9 format=3 uid="uid://dveakhbhm8c5d"]
 
 [ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_d2w3l"]
+[ext_resource type="Script" uid="uid://weqxccsi47a7" path="res://src/scripts/arena.gd" id="1_xkb6c"]
 [ext_resource type="PackedScene" uid="uid://7gv6q50fuutj" path="res://src/scenes/player.tscn" id="2_jui4b"]
-
-[sub_resource type="GDScript" id="GDScript_jui4b"]
-resource_name = "arena"
-script/source = "extends Node3D
-
-@export var starting_wave := 1
-@export var enemy_increase_frequency := 2 ## Add an enemy every number waves
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-"
+[ext_resource type="PackedScene" uid="uid://43b4m1bee8c" path="res://src/scenes/enemies/chaser/chaser.tscn" id="4_77o6r"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_jui4b"]
-vertices = PackedVector3Array(-15.453, -1.92782, -16.6576, -15.453, -1.92782, 16.5924, 15.547, -1.92782, 16.5924, 15.547, -1.92782, -16.6576)
+vertices = PackedVector3Array(-14.2536, -1.92782, -16.6576, -14.2536, -1.92782, 16.5924, 16.7464, -1.92782, 16.5924, 16.7464, -1.92782, -16.6576)
 polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
 [sub_resource type="Sky" id="Sky_jui4b"]
@@ -36,10 +21,26 @@ fog_light_energy = 5.0
 volumetric_fog_density = 0.2
 volumetric_fog_emission = Color(0.676879, 0.676879, 0.676879, 1)
 
-[node name="Main" type="Node3D"]
-script = SubResource("GDScript_jui4b")
+[sub_resource type="GDScript" id="GDScript_xkb6c"]
+resource_name = "spawner"
+script/source = "extends Marker3D
 
-[node name="DirectionalLight3D" type="OmniLight3D" parent="."]
+@export var enemy_scene: PackedScene
+@export var spawning_delay := 0.5
+
+@onready var main := get_parent()
+
+func spawn_enemy() -> void:
+	var instance := enemy_scene.instantiate()
+	instance.global_position = global_position
+	main.add_child(instance)
+	await get_tree().create_timer(spawning_delay).timeout
+"
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_xkb6c")
+
+[node name="Light" type="OmniLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 4.90148, 0)
 light_energy = 5.0
 omni_range = 4096.0
@@ -48,7 +49,7 @@ omni_range = 4096.0
 navigation_mesh = SubResource("NavigationMesh_jui4b")
 
 [node name="BasicBlock" parent="NavigationRegion3D" instance=ExtResource("1_d2w3l")]
-transform = Transform3D(31.906, 0, 0, 0, 1, 0, 0, 0, 34.3151, 0, -2.92782, 0)
+transform = Transform3D(31.906, 0, 0, 0, 1, 0, 0, 0, 34.3151, 1.19944, -2.92782, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xkb6c")
@@ -75,3 +76,27 @@ block_style = 2
 transform = Transform3D(-8.74228e-08, 0, 35.2154, 0, 25.8463, 0, -2, 0, -1.53932e-06, 1.00497, 0.0237856, 17.8819)
 block_color_group = 3
 block_style = 2
+
+[node name="Spawner" type="Marker3D" parent="." groups=["spawner"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 15)
+script = SubResource("GDScript_xkb6c")
+enemy_scene = ExtResource("4_77o6r")
+
+[node name="Spawner2" type="Marker3D" parent="." groups=["spawner"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -15)
+script = SubResource("GDScript_xkb6c")
+enemy_scene = ExtResource("4_77o6r")
+
+[node name="Spawner3" type="Marker3D" parent="." groups=["spawner"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, -1, 0)
+script = SubResource("GDScript_xkb6c")
+enemy_scene = ExtResource("4_77o6r")
+
+[node name="Spawner4" type="Marker3D" parent="." groups=["spawner"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, -1, 0)
+script = SubResource("GDScript_xkb6c")
+enemy_scene = ExtResource("4_77o6r")
+
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
+[connection signal="child_exiting_tree" from="." to="." method="_on_child_exiting_tree"]
+[connection signal="died" from="Player" to="." method="_on_player_died"]

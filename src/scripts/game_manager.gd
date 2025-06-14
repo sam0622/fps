@@ -6,10 +6,9 @@ enum DamageTypes { BULLET, BLUNT }
 
 
 # Scene UIDs
-#const main_menu: String
-#const settings_uid: String
-#const arena_uid: String
-const death_screen_uid := "uid://5kd854v8y4b1"
+#const MAIN_MENU_UID: String
+#const SETTINGS_UID: String
+const ARENA_UID := "uid://dveakhbhm8c5d"
 
 var time := Time.get_ticks_msec() ## How long the program has been running.
 var fps := Engine.get_frames_per_second()
