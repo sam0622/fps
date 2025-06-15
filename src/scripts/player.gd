@@ -38,6 +38,7 @@ var dash_direction: Vector3
 func _ready() -> void:
 	ray.add_exception(self)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	camera.fov = Settings.fov
 	assert(hud, "Critical error: Player HUD not found")
 	connect("ability_changed", hud.update_ability_icon)
 

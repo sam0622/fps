@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="FPS"
-run/main_scene="res://src/scenes/levels/testing_ground.tscn"
+run/main_scene="uid://svae0j87csnw"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=60
 
 [autoload]
 
-GameManager="*res://src/scripts/game_manager.gd"
+Settings="*res://src/scripts/singletons/settings.gd"
+GameManager="*res://src/scripts/singletons/game_manager.gd"
 
 [debug]
 
@@ -108,4 +109,5 @@ use_ablility={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+textures/vram_compression/import_etc2_astc=true
 anti_aliasing/canvas_textures/default_texture_repeat=1
