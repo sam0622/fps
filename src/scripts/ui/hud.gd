@@ -16,7 +16,8 @@ var overlay_progress := 0.0:
 	set = set_overlay_progress
 
 ## The progress of the gun icon's overlay
-var gun_overlay_progress := 0.0: set = set_gun_overlay_progress
+var gun_overlay_progress := 0.0:
+	set = set_gun_overlay_progress
 
 
 func _ready() -> void:

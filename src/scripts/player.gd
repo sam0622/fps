@@ -34,8 +34,6 @@ var dash_direction: Vector3
 @onready var death_screen := %DeathScreen
 
 
-
-
 ## Does anything that can't be an [annotation @GDScript.@onready] variable.
 func _ready() -> void:
 	ray.add_exception(self)
@@ -61,7 +59,9 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if not $NewGunCooldown.is_stopped():
-		hud.gun_overlay_progress = lerp(0.0, 1.0, $NewGunCooldown.time_left / $NewGunCooldown.wait_time)
+		hud.gun_overlay_progress = lerp(
+			0.0, 1.0, $NewGunCooldown.time_left / $NewGunCooldown.wait_time
+		)
 
 
 ## Handles gravity, jumping and movement input.
@@ -69,7 +69,7 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor() or health <= 0:
 		velocity.y -= GameManager.gravity * delta
-	
+
 	if can_move and health > 0:
 		# Handle Jump.
 		if Input.is_action_just_pressed("Jump") and is_on_floor():
@@ -78,7 +78,7 @@ func _physics_process(delta: float) -> void:
 		var input_dir := Input.get_vector("moveLeft", "moveRight", "moveForward", "moveBackward")
 		var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if is_dashing:
-				velocity = dash_direction * speed
+			velocity = dash_direction * speed
 		elif direction:
 			if can_move:
 				velocity.x = direction.x * speed
@@ -103,7 +103,10 @@ func _input(event: InputEvent) -> void:
 
 		if event is InputEventMouseButton:
 			# Captures mouse if needed
-			if event.button_index == MOUSE_BUTTON_LEFT and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+			if (
+				event.button_index == MOUSE_BUTTON_LEFT
+				and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE
+			):
 				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 				return
 			if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -129,7 +132,7 @@ func _input(event: InputEvent) -> void:
 func set_health(new_health: int) -> void:
 	if invincible:
 		return
-	
+
 	if new_health > 0:
 		new_health = clampi(new_health, 0, 100)
 		var is_heal := new_health > health
@@ -137,6 +140,7 @@ func set_health(new_health: int) -> void:
 			health = new_health
 	else:
 		die()
+
 
 ## Spawns a dead player, and deletes player
 func die() -> void:
@@ -180,6 +184,5 @@ func set_ability(new_ability: Ability) -> void:
 func _on_new_gun_cooldown_timeout() -> void:
 	equip_gun(starting_gun)
 	hud.gun_overlay_progress = 0.0
-
 
 #endregion

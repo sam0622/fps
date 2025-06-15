@@ -23,7 +23,9 @@ func _process(delta: float) -> void:
 
 func trigger() -> void:
 	super()
-	player.dash_direction = (player.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	player.dash_direction = (
+		(player.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	)
 	player.speed *= speed_multiplier
 	player.is_dashing = true
 	if has_iframes:

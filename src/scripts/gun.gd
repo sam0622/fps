@@ -114,7 +114,6 @@ func shoot() -> void:
 	state = GunState.COOLDOWN
 	cooldown.start()
 	line.hide()
-	
 
 
 ## Throws the gun and unequips it from the [Player]

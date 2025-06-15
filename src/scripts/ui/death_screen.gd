@@ -26,7 +26,7 @@ func _on_restart_button_pressed() -> void:
 
 
 func _on_menu_button_pressed() -> void:
-	pass # Replace with function body.
+	pass  # Replace with function body.
 
 
 func fade_in() -> void:

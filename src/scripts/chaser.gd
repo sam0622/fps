@@ -38,7 +38,7 @@ func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO
 	if not is_on_floor():
 		velocity.y -= GameManager.gravity
-	
+
 	if player != null:
 		if Engine.get_frames_drawn() % update_frequency == 0:
 			update_target_location(player.global_transform.origin)

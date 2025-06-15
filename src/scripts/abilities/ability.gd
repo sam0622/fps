@@ -15,12 +15,13 @@ enum KeyPressType { TAP, HOLD }
 ## Only relevant if [member Ability.has_cooldown] is true.
 @export var cooldown_length: float
 
-var is_active := false: set = set_is_active ## If the ability is the player's current ability.
-var in_use := false ## If the abilies effect is currently active, NOT the same as [member Ability.is_active].
+var is_active := false:
+	set = set_is_active  ## If the ability is the player's current ability.
+var in_use := false  ## If the abilies effect is currently active, NOT the same as [member Ability.is_active].
 var on_cooldown := false
-var overlay_start_progress: float ## Where the overlay of the ability HUD icon should start.
-var trigger_condition := true ## Optional condition required to trigger ability.
-var press_type: KeyPressType ## Whether the ability key should be tapped or held.
+var overlay_start_progress: float  ## Where the overlay of the ability HUD icon should start.
+var trigger_condition := true  ## Optional condition required to trigger ability.
+var press_type: KeyPressType  ## Whether the ability key should be tapped or held.
 
 @onready var player := get_tree().get_first_node_in_group("player") as Player
 @onready var cooldown_timer := player.get_node("Abilities/AbilityCooldown") as Timer
@@ -76,6 +77,7 @@ func _on_ability_cooldown_timeout() -> void:
 func _on_ability_use_time_timeout() -> void:
 	on_cooldown = true
 	detrigger()
+
 
 #endregion
 

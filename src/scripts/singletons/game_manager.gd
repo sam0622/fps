@@ -4,12 +4,11 @@ extends Node
 ## @deprecated
 enum DamageTypes { BULLET, BLUNT }
 
-
-var time := Time.get_ticks_msec() ## How long the program has been running.
+var time := Time.get_ticks_msec()  ## How long the program has been running.
 var fps := Engine.get_frames_per_second()
 var gravity := ProjectSettings.get("physics/3d/default_gravity") as float
 var last_esc: int  ## Last time the escape key was pressed.
-var enemy_despawn_time := 15.0 ## How long unitl a dead [Chaser] is deleted.
+var enemy_despawn_time := 15.0  ## How long unitl a dead [Chaser] is deleted.
 
 @onready var main := get_node_or_null("/root/Main")
 
