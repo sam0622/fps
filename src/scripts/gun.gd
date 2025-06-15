@@ -54,7 +54,7 @@ static func get_uid(gun: GunType) -> String:
 ## Initializes timers and position
 func _ready() -> void:
 	cooldown.wait_time = fire_cooldown
-	self.position = player.get_node("Head/Camera3d/GunMarker").position
+	self.position = player.get_node("Head/Camera3D/GunMarker").position
 	line.hide()
 
 

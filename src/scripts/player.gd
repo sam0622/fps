@@ -162,7 +162,7 @@ func equip_gun(gun: Gun.GunType) -> void:
 		unequip_gun()
 	var uid := load(Gun.get_uid(gun))
 	var instance := uid.instantiate() as Node3D
-	$Head/Camera3d/GunMarker.add_child(instance)
+	$Head/Camera3D/GunMarker.add_child(instance)
 	current_gun = camera.get_node_or_null("GunMarker/Gun")
 
 

@@ -33,25 +33,25 @@ mesh = SubResource("CapsuleMesh_6b3ky")
 
 [node name="Head" type="Node3D" parent="."]
 
-[node name="Camera3d" type="Camera3D" parent="Head"]
+[node name="Camera3D" type="Camera3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 current = true
 fov = 90.0
 
-[node name="GunMarker" type="Marker3D" parent="Head/Camera3d"]
+[node name="GunMarker" type="Marker3D" parent="Head/Camera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.222453, -0.266664, -0.36361)
 
-[node name="RayCast3D" type="RayCast3D" parent="Head/Camera3d"]
+[node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
 unique_name_in_owner = true
 target_position = Vector3(0, 0, -1000)
 collision_mask = 15
 
-[node name="ThrowMarker" type="Marker3D" parent="Head/Camera3d"]
+[node name="ThrowMarker" type="Marker3D" parent="Head/Camera3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.465439, -0.369398)
 
-[node name="HUD" parent="Head/Camera3d" instance=ExtResource("2_v4rts")]
+[node name="HUD" parent="Head/Camera3D" instance=ExtResource("2_v4rts")]
 unique_name_in_owner = true
 
 [node name="Abilities" type="Node3D" parent="."]
