@@ -55,7 +55,7 @@ transform = Transform3D(31.906, 0, 0, 0, 1, 0, 0, 0, 34.3151, 1.19944, -2.92782,
 environment = SubResource("Environment_xkb6c")
 
 [node name="Player" parent="." instance=ExtResource("2_jui4b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.37379, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -1.37379, 0)
 
 [node name="BasicBlock3" parent="." instance=ExtResource("1_d2w3l")]
 transform = Transform3D(2, 0, 0, 0, 25.8463, 0, 0, 0, 35.2154, 17.0711, 0.0237856, -0.0307474)

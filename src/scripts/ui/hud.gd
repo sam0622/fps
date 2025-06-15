@@ -9,11 +9,11 @@ const RED := Color.RED
 @export var show_fps := false
 
 @onready var player := get_tree().get_first_node_in_group("player") as Player
+@onready var wave_counter := $WaveCounter
 
 ## The progress of the ability cooldown overlay.
 var overlay_progress := 0.0:
 	set = set_overlay_progress
-
 
 ## The progress of the gun icon's overlay
 var gun_overlay_progress := 0.0: set = set_gun_overlay_progress

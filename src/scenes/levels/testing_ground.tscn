@@ -120,6 +120,7 @@ shadow_enabled = true
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("6_g85ek")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7488, -15.957)
+braindead = true
 
 [node name="DamageArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.7718, 0.949177, -6.40198)

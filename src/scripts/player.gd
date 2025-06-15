@@ -115,6 +115,10 @@ func _input(event: InputEvent) -> void:
 							$NewGunCooldown.start()
 						else:
 							current_gun.shoot()
+				if event.is_action_pressed("right_click") and current_gun != null:
+					camera.fov = 22.5
+				elif event.is_action_released("right_click"):
+					camera.fov = 90
 
 
 #endregion

@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bdayk27ip4v0q"]
+[gd_scene load_steps=10 format=3 uid="uid://bdayk27ip4v0q"]
 
 [ext_resource type="Script" uid="uid://d38ns0ti6jq2t" path="res://src/scripts/ui/hud.gd" id="1_qq6ev"]
 [ext_resource type="Texture2D" uid="uid://irvc7k2gp4e7" path="res://assets/sprites/ui/crosshair.png" id="1_yaeld"]
 [ext_resource type="Texture2D" uid="uid://dmr45tvbno2ji" path="res://assets/sprites/ui/icons/dash_icon.png" id="4_dqg30"]
 [ext_resource type="Shader" uid="uid://cajeoioqdrg7n" path="res://assets/resources/shaders/icon.gdshader" id="4_p1aga"]
 [ext_resource type="Texture2D" uid="uid://7lesgl5ar1kc" path="res://assets/sprites/ui/icons/Pistol_icon.png" id="5_p1aga"]
+[ext_resource type="FontFile" uid="uid://bdgy52hnodcit" path="res://assets/NotoSans-VariableFont_wdth,wght.ttf" id="6_rgl5r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p1aga"]
 bg_color = Color(0.233925, 0.233925, 0.233925, 1)
@@ -101,3 +102,19 @@ offset_right = 6475.0
 offset_bottom = 6570.0
 scale = Vector2(0.013, 0.013)
 texture = ExtResource("5_p1aga")
+
+[node name="WaveCounter" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -190.5
+offset_right = 190.5
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_fonts/normal_font = ExtResource("6_rgl5r")
+theme_override_font_sizes/normal_font_size = 45
+text = "Wave 1"
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1

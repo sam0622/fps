@@ -23,6 +23,7 @@ static var guns := [Gun]  ## All types of guns. May be reworked in the future
 @export var ammo := 5:
 	set(value):
 		ammo = value
+		hud.gun_overlay_progress = 1.0 - lerp(0.0, 1.0, ammo as float / starting_ammo)
 		if ammo <= 0:
 			ammo = 0
 			state = GunState.EMPTY
@@ -54,9 +55,10 @@ static func get_uid(gun: GunType) -> String:
 func _ready() -> void:
 	cooldown.wait_time = fire_cooldown
 	self.position = player.get_node("Head/Camera3d/GunMarker").position
+	line.hide()
 
 
-## Ensures that gun is set as empty, will likely be removed
+## Ensures that gun is set as empty
 func _process(_delta: float) -> void:
 	if ammo == 0:
 		state = GunState.EMPTY
@@ -108,8 +110,6 @@ func shoot() -> void:
 	line.points[1] = get_target_position()
 	state = GunState.SHOOTING
 	ammo -= 1
-	print(1.0 - lerp(0.0, 1.0, ammo as float / starting_ammo))
-	hud.gun_overlay_progress = 1.0 - lerp(0.0, 1.0, ammo as float / starting_ammo)
 	await get_tree().create_timer(0.1).timeout  # Wait 0.1 sec
 	state = GunState.COOLDOWN
 	cooldown.start()

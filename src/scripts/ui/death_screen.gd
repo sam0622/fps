@@ -12,7 +12,7 @@ const DEATH_MESSAGES := [
 	"Maybe invest in a gaming chair",
 	"Easy mode can now be selected",
 	"You really suck at this",
-	"Are you really getting outsmarted by 153 lines of code?"
+	"Are you really getting beat by 150 lines of code?"
 ]
 
 
