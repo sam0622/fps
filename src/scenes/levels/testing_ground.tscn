@@ -1,7 +1,6 @@
-[gd_scene load_steps=17 format=3 uid="uid://ctahsvj88g1om"]
+[gd_scene load_steps=16 format=3 uid="uid://ctahsvj88g1om"]
 
 [ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_auvdq"]
-[ext_resource type="Script" uid="uid://c15w3v8uhrmgf" path="res://src/scripts/level.gd" id="1_q7uao"]
 [ext_resource type="PackedScene" uid="uid://7gv6q50fuutj" path="res://src/scenes/player.tscn" id="2_g85ek"]
 [ext_resource type="Texture2D" uid="uid://cgp4mvev1cbra" path="res://addons/devblocks/textures/purple/texture_01.png" id="3_q7uao"]
 [ext_resource type="PackedScene" uid="uid://dsjjwhl1ox0am" path="res://src/scenes/static_target.tscn" id="4_qy0nn"]
@@ -54,7 +53,6 @@ func _on_body_entered(body: Node3D) -> void:
 size = Vector3(0.309082, 3.84229, 4.41345)
 
 [node name="Main" type="Node3D"]
-script = ExtResource("1_q7uao")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_l5pxq")

@@ -19,7 +19,7 @@ const JUMP_VELOCITY := 4.5
 
 var ability: Ability:
 	set = set_ability
-var mouse_sensitivity := 1200
+var mouse_sensitivity := Settings.mouse_sensitivity
 var current_gun: Gun  ## The currently equipped [Gun].
 var can_be_hit := true
 var can_move := true

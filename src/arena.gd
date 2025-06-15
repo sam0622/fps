@@ -19,6 +19,7 @@ var wave_ongoing := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	wave = starting_wave - 1
 	start_wave()
 
 

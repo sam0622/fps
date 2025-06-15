@@ -1,0 +1,113 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnxcrjkc525tj"]
+
+[ext_resource type="FontFile" uid="uid://bdgy52hnodcit" path="res://assets/NotoSans-VariableFont_wdth,wght.ttf" id="1_k3g1x"]
+
+[sub_resource type="GDScript" id="GDScript_033ig"]
+resource_name = "settings_menu"
+script/source = "extends Control
+
+
+@onready var sensitivity_label := $VBoxContainer/MouseSensitivity/MouseSensitivitySlider/MouseSensitivityValue
+@onready var fov_label := $VBoxContainer/FOV/FOVSlider/FOVValue
+
+func _on_mouse_sensitivity_slider_value_changed(value: float) -> void:
+	Settings.mouse_sensitivity = 800 / (value / 5)
+	print(Settings.mouse_sensitivity)
+	sensitivity_label.text = str(value)
+
+
+func _on_fov_slider_value_changed(value: float) -> void:
+	Settings.fov = value
+	fov_label.text = str(value)
+
+
+func _on_button_pressed() -> void:
+	GameManager.load_main_menu()
+"
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_033ig")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -135.0
+offset_right = 250.0
+offset_bottom = 135.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 150
+
+[node name="MouseSensitivity" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_k3g1x")
+theme_override_font_sizes/font_size = 30
+text = "Mouse sensitivity"
+
+[node name="MouseSensitivitySlider" type="HSlider" parent="VBoxContainer/MouseSensitivity"]
+layout_mode = 2
+offset_top = 46.0
+offset_right = 500.0
+offset_bottom = 62.0
+min_value = 1.0
+max_value = 10.0
+value = 5.0
+
+[node name="MouseSensitivityValue" type="Label" parent="VBoxContainer/MouseSensitivity/MouseSensitivitySlider"]
+layout_mode = 0
+offset_left = 508.0
+offset_top = -13.0
+offset_right = 556.0
+offset_bottom = 29.0
+theme_override_fonts/font = ExtResource("1_k3g1x")
+theme_override_font_sizes/font_size = 30
+text = "5.0"
+
+[node name="FOV" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_k3g1x")
+theme_override_font_sizes/font_size = 30
+text = "FOV"
+
+[node name="FOVSlider" type="HSlider" parent="VBoxContainer/FOV"]
+offset_top = 46.0
+offset_right = 500.0
+offset_bottom = 62.0
+min_value = 70.0
+value = 90.0
+
+[node name="FOVValue" type="Label" parent="VBoxContainer/FOV/FOVSlider"]
+offset_left = 508.0
+offset_top = -13.0
+offset_right = 556.0
+offset_bottom = 29.0
+theme_override_fonts/font = ExtResource("1_k3g1x")
+theme_override_font_sizes/font_size = 30
+text = "90.0"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_right = 8.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_k3g1x")
+theme_override_font_sizes/font_size = 40
+text = "Back"
+
+[connection signal="value_changed" from="VBoxContainer/MouseSensitivity/MouseSensitivitySlider" to="." method="_on_mouse_sensitivity_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/FOV/FOVSlider" to="." method="_on_fov_slider_value_changed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dveakhbhm8c5d"]
 
 [ext_resource type="PackedScene" uid="uid://dj26sacnhty4r" path="res://addons/devblocks/blocks/basic_block.tscn" id="1_d2w3l"]
-[ext_resource type="Script" uid="uid://weqxccsi47a7" path="res://src/scripts/arena.gd" id="1_xkb6c"]
+[ext_resource type="Script" uid="uid://weqxccsi47a7" path="res://src/arena.gd" id="1_xkb6c"]
 [ext_resource type="PackedScene" uid="uid://7gv6q50fuutj" path="res://src/scenes/player.tscn" id="2_jui4b"]
 [ext_resource type="PackedScene" uid="uid://43b4m1bee8c" path="res://src/scenes/enemies/chaser/chaser.tscn" id="4_77o6r"]
 
@@ -39,6 +39,7 @@ func spawn_enemy() -> void:
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_xkb6c")
+starting_wave = 16
 
 [node name="Light" type="OmniLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 4.90148, 0)

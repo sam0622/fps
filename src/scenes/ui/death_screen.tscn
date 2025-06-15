@@ -158,7 +158,7 @@ visible_ratio = 0.0
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = 100
+theme_override_constants/separation = 50
 alignment = 1
 
 [node name="RestartButton" type="Button" parent="VBoxContainer/ButtonContainer"]
