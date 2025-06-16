@@ -13,7 +13,7 @@ var wave_ongoing := false
 @onready var player := get_tree().get_first_node_in_group("player") as Player
 @onready var enemies := get_tree().get_nodes_in_group("enemy")
 @onready var spawners := get_tree().get_nodes_in_group("spawner")
-@onready var active_enemies := len(enemies)
+@onready var active_enemies := len(enemies) ## All enemies that are not dead
 @onready var wave_counter := player.hud.wave_counter as RichTextLabel
 
 
@@ -78,6 +78,7 @@ func halt_enemies() -> void:
 			enemy.state = Chaser.States.IDLE
 
 
+## Display a seconds long countdown in the wave counter
 func countdown(seconds: int) -> void:
 	for i in range(seconds, 0, -1):
 		wave_counter.text = str(i)

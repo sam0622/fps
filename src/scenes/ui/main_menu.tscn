@@ -11,6 +11,10 @@ func _on_play_button_pressed() -> void:
 	GameManager.load_arena()
 
 
+func _on_help_button_pressed() -> void:
+	GameManager.load_help()
+
+
 func _on_settings_button_pressed() -> void:
 	GameManager.load_settings()
 
@@ -41,13 +45,19 @@ offset_right = 125.0
 offset_bottom = 227.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 25
 
 [node name="PlayButton" type="Button" parent="Buttons"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_rwhmm")
 theme_override_font_sizes/font_size = 40
 text = "Play"
+
+[node name="HelpButton" type="Button" parent="Buttons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_rwhmm")
+theme_override_font_sizes/font_size = 40
+text = "Help"
 
 [node name="SettingsButton" type="Button" parent="Buttons"]
 layout_mode = 2
@@ -76,11 +86,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("1_rwhmm")
 theme_override_font_sizes/normal_font_size = 100
-text = "Title"
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [connection signal="pressed" from="Buttons/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Buttons/HelpButton" to="." method="_on_help_button_pressed"]
 [connection signal="pressed" from="Buttons/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="Buttons/ExitButton" to="." method="_on_exit_button_pressed"]

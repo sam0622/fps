@@ -18,7 +18,12 @@ const DEATH_MESSAGES := [
 
 ## Picks a random message from [constant DeathScreen.DEATH_MESSAGES].
 func _ready() -> void:
-	$VBoxContainer/Label.text = Utils.random_choice(DEATH_MESSAGES)
+	var text := ""
+	if randf() < 0.25:
+		text = Utils.random_choice(DEATH_MESSAGES)
+	else:
+		text = "You died"
+	$VBoxContainer/Label.text = text
 
 
 func _on_restart_button_pressed() -> void:
@@ -26,7 +31,7 @@ func _on_restart_button_pressed() -> void:
 
 
 func _on_menu_button_pressed() -> void:
-	pass  # Replace with function body.
+	GameManager.load_main_menu()
 
 
 func fade_in() -> void:

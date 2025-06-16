@@ -10,6 +10,11 @@ script/source = "extends Control
 @onready var sensitivity_label := $VBoxContainer/MouseSensitivity/MouseSensitivitySlider/MouseSensitivityValue
 @onready var fov_label := $VBoxContainer/FOV/FOVSlider/FOVValue
 
+
+func _ready() -> void:
+	$VBoxContainer/ShowFPS.button_pressed = Settings.show_fps
+
+
 func _on_mouse_sensitivity_slider_value_changed(value: float) -> void:
 	Settings.mouse_sensitivity = 800 / (value / 5)
 	print(Settings.mouse_sensitivity)
@@ -23,6 +28,10 @@ func _on_fov_slider_value_changed(value: float) -> void:
 
 func _on_button_pressed() -> void:
 	GameManager.load_main_menu()
+
+
+func _on_check_box_pressed() -> void:
+	Settings.show_fps = not Settings.show_fps
 "
 
 [node name="SettingsMenu" type="Control"]
@@ -81,6 +90,7 @@ theme_override_font_sizes/font_size = 30
 text = "FOV"
 
 [node name="FOVSlider" type="HSlider" parent="VBoxContainer/FOV"]
+layout_mode = 0
 offset_top = 46.0
 offset_right = 500.0
 offset_bottom = 62.0
@@ -88,6 +98,7 @@ min_value = 70.0
 value = 90.0
 
 [node name="FOVValue" type="Label" parent="VBoxContainer/FOV/FOVSlider"]
+layout_mode = 0
 offset_left = 508.0
 offset_top = -13.0
 offset_right = 556.0
@@ -95,6 +106,12 @@ offset_bottom = 29.0
 theme_override_fonts/font = ExtResource("1_k3g1x")
 theme_override_font_sizes/font_size = 30
 text = "90.0"
+
+[node name="ShowFPS" type="CheckButton" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_k3g1x")
+theme_override_font_sizes/font_size = 30
+text = "Show FPS"
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1
@@ -110,4 +127,5 @@ text = "Back"
 
 [connection signal="value_changed" from="VBoxContainer/MouseSensitivity/MouseSensitivitySlider" to="." method="_on_mouse_sensitivity_slider_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/FOV/FOVSlider" to="." method="_on_fov_slider_value_changed"]
+[connection signal="pressed" from="VBoxContainer/ShowFPS" to="." method="_on_check_box_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

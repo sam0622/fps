@@ -42,7 +42,7 @@ func _physics_process(delta: float) -> void:
 	if player != null:
 		if Engine.get_frames_drawn() % update_frequency == 0:
 			update_target_location(player.global_transform.origin)
-			
+
 		# Chase player
 		if state == States.CHASING:
 			var next_location := agent.get_next_path_position() as Vector3

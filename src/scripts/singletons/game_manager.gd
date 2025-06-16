@@ -25,7 +25,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("free_mouse"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		if time - last_esc <= 500:
-			get_tree().quit()
+			load_main_menu()
 		last_esc = time
 
 
@@ -50,5 +50,11 @@ func load_main_menu() -> void:
 	load_scene("uid://svae0j87csnw")
 
 
+## Loads the settings menu
 func load_settings() -> void:
 	load_scene("uid://dnxcrjkc525tj")
+
+
+## Loads the help screen
+func load_help() -> void:
+	load_scene("uid://i370gftb8xqi")

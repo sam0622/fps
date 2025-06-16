@@ -6,8 +6,6 @@ const GREEN := Color.GREEN
 const YELLOW := Color.YELLOW
 const RED := Color.RED
 
-@export var show_fps := false
-
 @onready var player := get_tree().get_first_node_in_group("player") as Player
 @onready var wave_counter := $WaveCounter
 
@@ -21,14 +19,14 @@ var gun_overlay_progress := 0.0:
 
 
 func _ready() -> void:
-	$FPSLabel.visible = show_fps
+	$FPSLabel.visible = Settings.show_fps
 
 
 ## Updates text labels.
 func _process(_delta: float) -> void:
 	var health := player.health as int
 	var ammo := -1 if not player.current_gun else player.current_gun.ammo
-	if show_fps:
+	if Settings.show_fps:
 		$FPSLabel.text = "%s FPS" % Engine.get_frames_per_second()
 
 	if health >= 75:
