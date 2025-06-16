@@ -31,7 +31,6 @@ var dash_direction: Vector3
 @onready var gun_marker := get_node("%GunMarker") as Marker3D  ## Indicates where the gun model should be.
 @onready var throw_marker := get_node("%ThrowMarker") as Marker3D  ## Indicates where a thrown gun should be spawned from.
 @onready var ray := get_node("%RayCast3D") as RayCast3D  ## A [RayCast3D] coming out of the player's head, used to register gunshot hits.
-@onready var death_screen := %DeathScreen
 
 
 ## Does anything that can't be an [annotation @GDScript.@onready] variable.
@@ -58,6 +57,7 @@ func _ready() -> void:
 #region Physics and input
 
 
+## Sets gun cooldown overlay progress
 func _process(_delta: float) -> void:
 	if not $NewGunCooldown.is_stopped():
 		hud.gun_overlay_progress = lerp(
@@ -130,6 +130,7 @@ func _input(event: InputEvent) -> void:
 #region Managment
 
 
+## Don't take damage if invincible, allow heals, die when health <= 0
 func set_health(new_health: int) -> void:
 	if invincible:
 		return
@@ -148,8 +149,8 @@ func die() -> void:
 	died.emit()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	var instance := dead_player_scene.instantiate() as RigidBody3D
-	instance.global_position = $Head/Camera3d.global_position
-	instance.rotation = $Head/Camera3d.rotation
+	instance.global_position = $Head/Camera3D.global_position
+	instance.get_node("Camera3D").global_rotation = $Head/Camera3D.global_rotation
 	GameManager.main.add_child(instance)
 	hide()
 	$Collider.disabled = true

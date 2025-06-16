@@ -42,7 +42,7 @@ func _physics_process(delta: float) -> void:
 	if player != null:
 		if Engine.get_frames_drawn() % update_frequency == 0:
 			update_target_location(player.global_transform.origin)
-
+			
 		# Chase player
 		if state == States.CHASING:
 			var next_location := agent.get_next_path_position() as Vector3
@@ -51,6 +51,10 @@ func _physics_process(delta: float) -> void:
 			velocity.x = v.x
 			# Back up if required
 			velocity.z = v.z if state == States.CHASING else -v.z
+		if state == States.ATTACKING:
+			# Make sure to look at player when attacking in case player is in attack range at spawn time
+			var v := (player.global_position - global_transform.origin).normalized() * move_speed
+			rotation.y = lerp_angle(rotation.y, atan2(-v.x, -v.z), delta * 10.0)
 
 	move_and_slide()
 

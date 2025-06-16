@@ -74,7 +74,8 @@ func spawn_enemies(enemies_to_spawn: int) -> void:
 # Sets all enemy states to idle
 func halt_enemies() -> void:
 	for enemy in enemies:
-		enemy.state = Chaser.States.IDLE
+		if enemy != null and enemy.state != Chaser.States.DEAD:
+			enemy.state = Chaser.States.IDLE
 
 
 func countdown(seconds: int) -> void:
